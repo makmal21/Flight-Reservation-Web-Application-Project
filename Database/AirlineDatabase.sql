@@ -239,8 +239,8 @@ INSERT INTO Ticket (TicketID, Name, Email, FlightID, PaymentID, SeatID) VALUES
 
 
 
--- ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
--- flush privileges;
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
+flush privileges;
 
 -- Insert the sum of other two price columns
 /*SELECT Flight.Price + Seat.Price

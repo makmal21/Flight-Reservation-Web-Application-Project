@@ -29,10 +29,10 @@ function RegisterForMembership() {
 
 return (
     <div>
-        {/* <h2>Become a member today!</h2> */}
+        
         <div className="form-wrapper-2">
             <div className="booking-form-container">
-            
+            <h2>Become a member today!</h2>
             <p style={{ textAlign: 'left' }}><b>Perks include:</b><br/ >
             <br />
             • Eligibility to apply for the company’s credit card<br />

@@ -1,0 +1,19 @@
+/* Flights.css */
+.week-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .day-box {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin: 5px;
+    text-align: center;
+    background-color: white;
+    width: 150px; /* Fixed width for each box */
+  }
+
+  .day-box .day-name {
+    font-weight: bold;
+  }

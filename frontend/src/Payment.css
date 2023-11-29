@@ -1,0 +1,13 @@
+/* Payment.css */
+.form-group {
+    max-width: 300px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  
+  /* Adjust the width for small screens */
+  @media (max-width: 768px) {
+    .form-group {
+      max-width: 100%;
+    }
+  }

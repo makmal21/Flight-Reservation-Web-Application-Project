@@ -1,0 +1,34 @@
+/* SeatSelect.css */
+.seat-selection-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .seat-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Creates 3 columns */
+    grid-template-rows: repeat(12, 1fr); /* Creates 20 rows */
+    gap: 5px; /* Adjust gap as needed */
+  }
+  
+  /* .seat-row {
+    display: flex;
+  } */
+  
+  .seat {
+    width: 25px; /* Width of each seat */
+    height: 25px; /* Height of each seat */
+    background-color: #ddd; /* Seat color */
+    border: 1px solid #bbb; /* Seat border */
+    display: flex; /* Use flexbox to center content */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    font-size: 0.75em; /* Adjust font size as needed */
+  }
+  
+  .aisle {
+    width: 25px; /* Width of the aisle */
+    /* height: 10%;  */
+  }
+  

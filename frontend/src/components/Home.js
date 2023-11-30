@@ -8,25 +8,68 @@ import axios from 'axios';
 
 function Home() {
 
-    //EXPRESS JS TEST STUFF: UNCOMMENT FOR TESTING PROXY
-    // const fetchMyData = async () => {
-    //     const response = await fetch('http://localhost:3010/my-endpoint');
-    //     if (!response.ok) {
-    //       throw new Error('Network response was NOT ok');
-    //     }
-    //     return response.json();
-    //   };
-    // const {data, error, isLoading } = useQuery('home-page', fetchMyData);
 
   
     const navigate = useNavigate();
-    // Use only formData state to manage all form fields
+
     const [formData, setFormData] = useState({
         from: '',
         to: '',
         departureDate: '',
         guests: '1',
     });
+
+    const [locationsFrom, setLocationsFrom] = useState([]);
+    const [locationsTo, setLocationsTo] = useState([]);
+    
+    // useEffect(() => {
+    //     const fetchLocations = async () => {
+    //         try {
+    //             const responseFrom = await axios.get('/api/flights/origin');
+    //             setLocationsFrom(responseFrom.data);
+    
+    //             const responseTo = await axios.get('/api/flights/destinations');
+    //             setLocationsTo(responseTo.data);
+    //         } catch (error) {
+    //             console.error("Error fetching locations:", error);
+    //         }
+    //     };
+    
+    //     fetchLocations();
+    // }, []);
+
+    // This useEffect hook remains mostly the same, it fetches the origins when the component mounts
+    useEffect(() => {
+        const fetchOrigins = async () => {
+            try {
+                const responseFrom = await axios.get('/api/flights/origin');
+                setLocationsFrom(responseFrom.data);
+            } catch (error) {
+                console.error("Error fetching origins:", error);
+            }
+        };
+
+        fetchOrigins();
+    }, []); // Empty dependency array to run only on component mount
+
+    // New useEffect hook to fetch destinations based on the selected origin
+    useEffect(() => {
+        if (formData.from) { // Only fetch destinations if an origin is selected
+            const fetchDestinations = async () => {
+                try {
+                    const responseTo = await axios.get(`/api/flights/destinations/${formData.from}`);
+                    setLocationsTo(responseTo.data);
+                } catch (error) {
+                    console.error("Error fetching destinations for origin:", error);
+                }
+            };
+            fetchDestinations();
+        } else {
+            setLocationsTo([]); // Reset destinations if no origin is selected
+        }
+    }, [formData.from]); // Dependency array includes formData.from to trigger the effect when it changes
+
+
     
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -48,8 +91,8 @@ function Home() {
     // console.log(data)
 
 
-    const locationOptions = ["Calgary", "Toronto", "Vancouver", 
-    "Montreal", "Edmonton", "Ottawa", "Winnipeg", "Halifax"];
+    // const locationOptions = ["Calgary", "Toronto", "Vancouver", 
+    // "Montreal", "Edmonton", "Ottawa", "Winnipeg", "Halifax"];
 
     return (
         <div>
@@ -62,26 +105,25 @@ function Home() {
                 <label htmlFor="trip-type">Trip type</label>
                 <select id="trip-type" name="trip-type">
                     <option value="one-way">One way</option>
-                    <option value="round-trip">Round trip</option>
                 </select>
 
                 <label htmlFor="from">From</label>
                 <select id="from" name="from" onChange={handleInputChange} value={formData.from}>
                     <option value="" disabled>Select departure city</option>
-                    {locationOptions.map((option, index) => (
-                        <option key={index} value={option}>
-                            {option}
-                         </option>
+                    {locationsFrom.map((location, index) => (
+                        <option key={index} value={location}>
+                            {location}
+                        </option>
                     ))}
                 </select>
 
                 <label htmlFor="to">Going to</label>
                 <select id="to" name="to" onChange={handleInputChange} value={formData.to}>
                     <option value="" disabled>Select arrival city</option>
-                    {locationOptions.map((option, index) => (
-                        <option key={index} value={option}>
-                            {option}
-                         </option>
+                    {locationsTo.map((location, index) => (
+                        <option key={index} value={location}>
+                            {location}
+                        </option>
                     ))}
                 </select>
 

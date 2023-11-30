@@ -1,5 +1,5 @@
 {
-  "proxy": "http://localhost:3010",
+  "proxy": "http://localhost:8081",
   "name": "my-react-app",
   "version": "0.1.0",
   "private": true,

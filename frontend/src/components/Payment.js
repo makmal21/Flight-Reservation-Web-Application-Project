@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row'; // Import Row
 import Col from 'react-bootstrap/Col'; // Import Col
+
 function Payment() {
   const [paymentDetails, setPaymentDetails] = useState({
     cardNumber: '',
@@ -12,15 +13,41 @@ function Payment() {
     cvv: '',
   });
 
+  const [validationError, setValidationError] = useState('');
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setPaymentDetails({ ...paymentDetails, [name]: value });
+  
+    // Only apply digit filtering and length restriction for card number and CVV
+    if (name === 'cardNumber' || name === 'cvv') {
+      const sanitizedValue = value.replace(/\D/g, ''); // Remove non-digit characters
+      if ((name === 'cardNumber' && sanitizedValue.length <= 16) ||
+          (name === 'cvv' && sanitizedValue.length <= 3)) {
+        setPaymentDetails({ ...paymentDetails, [name]: sanitizedValue });
+      }
+    } else {
+      // Allow all values for other fields (including cardholder name, month, and year)
+      setPaymentDetails({ ...paymentDetails, [name]: value });
+    }
   };
+  
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Process payment details
+    setValidationError(''); // Reset validation error message
+
+    // Check if card number is exactly 16 digits and CVV is exactly 3 digits
+    if (paymentDetails.cardNumber.length !== 16) {
+      setValidationError('Invalid Credit Card number.');
+      return;
+    } else if (paymentDetails.cvv.length !== 3) {
+      setValidationError('Invalid CVV number.');
+      return;
+    }
+
+    // Process payment details if validation passes
     console.log(paymentDetails);
+    // Add your logic to process the payment here
   };
 
   return (
@@ -29,13 +56,19 @@ function Payment() {
       <div className='d-flex justify-content-center align-items-center'>
         <div className='p-3 bg-white w-25'>
           <p>Total: <b>$INSERT PRICE FROM BACKEND HERE</b></p>
+
+
           <Form onSubmit={handleSubmit}>
+
+
             <Form.Group className="mb-3">
               <Form.Label>Card Number</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter Card Number"
                 name="cardNumber"
+                inputMode="numeric"
+                maxLength="16" // Restrict to 16 characters
                 value={paymentDetails.cardNumber}
                 onChange={handleInputChange}
                 required
@@ -95,14 +128,14 @@ function Payment() {
               </Form.Group>
             </Row>
 
-
             <Form.Group className="mb-3">
-              <p></p>
               <Form.Label>CVV</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter CVV"
                 name="cvv"
+                inputMode="numeric"
+                maxLength="3" // Restrict to 3 characters
                 value={paymentDetails.cvv}
                 onChange={handleInputChange}
                 required
@@ -113,8 +146,11 @@ function Payment() {
               Submit Payment
             </Button>
           </Form>
+          
+
         </div>
       </div>
+      {validationError && <p style={{ color: 'white', fontSize: '28px', fontWeight: 'bold' }}>{validationError}</p>}
     </div>
   );
 }

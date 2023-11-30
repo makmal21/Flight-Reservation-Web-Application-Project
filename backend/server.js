@@ -77,6 +77,40 @@ app.delete('/cancel-flight/:id',(req, res)=> {
   })
 })
 
+
+//Get origin flights
+app.get('/api/flights/origin', (req, res) => {
+  const sql = "SELECT DISTINCT Origin FROM Flight";
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error('Error fetching origins:', err);
+      res.status(500).json({ error: 'Internal Server Error' });
+    } else {
+      // Extract only the 'Origin' values into an array
+      const origins = results.map(row => row.Origin);
+      res.status(200).json(origins);
+    }
+  });
+});
+
+//Get Destinations flights
+app.get('/api/flights/destinations/:origin', (req, res) => {
+  const origin = req.params.origin;
+  const sql = "SELECT DISTINCT Destination FROM Flight WHERE Origin = ?";
+  db.query(sql, [origin], (err, results) => {
+    if (err) {
+      console.error('Error fetching destinations for origin:', err);
+      res.status(500).json({ error: 'Internal Server Error' });
+    } else {
+      // Extract only the 'Destination' values into an array
+      const destinations = results.map(row => row.Destination);
+      res.status(200).json(destinations);
+    }
+  });
+});
+
+
+
 /* app.delete('/cancel-flight',(req, res)=> {
   const sql ="DELETE FROM Ticket WHERE `TicketID` = ?"
   const value = req.body.TicketID

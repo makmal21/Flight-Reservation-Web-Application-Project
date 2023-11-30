@@ -75,7 +75,6 @@ app.delete('/cancel-flight/:id',(req, res)=> {
   })
 })
 
-
 //Get origin options from homepage
 app.get('/api/flights/origin', (req, res) => {
   const sql = "SELECT DISTINCT Origin FROM Flight";
@@ -114,7 +113,7 @@ app.use('/api', seatRoutes);
 
 /*SYSTEM ADMIN SQL QUERIES */
 
-//Fetch data from sql, get query 
+//Fetch data from sql, get query for Crew table 
 app.get("/system-admin-view", (req, res) => {
   const sql = "SELECT * FROM Crew";
   db.query(sql, (err, data) => {
@@ -122,6 +121,21 @@ app.get("/system-admin-view", (req, res) => {
       return res.json(data);
   })
 });
+
+//add into crew table
+app.post('/system-admin-view/add', (req, res) => {
+  const sql = "INSERT INTO Crew (`CrewID`, `Name`, `Role`, `FlightID`) VALUES (?, ?, ?, ?)";
+  const values = [
+      req.body.crewID,
+      req.body.name, 
+      req.body.role, 
+      req.body.flightID
+  ] 
+  db.query(sql, values, (err, data) => {
+      if (err) return res.status(500).json({ error: err.message });
+      return res.json(data);
+  })
+})
 
 //Put data entered into Crew relation table 
 app.put('/update/:id', (req, res) => {
@@ -138,27 +152,16 @@ app.put('/update/:id', (req, res) => {
   })
 })
 
-//add into
-app.post('/add', (req, res) => {
-  const sql = "INSERT INTO Crew ('CrewID','Name', 'Role', 'FlightID') VALUES (?)";
-  const values = [
-      req.body.name, 
-      req.body.role, 
-      req.body.flightID
-  ] 
-  db.query(sql, [values], (err, data) => {
-      if (err) return res.json("Error");
-      return res.json(data);
-  })
-})
-
 //Delete data that matches ID
 app.delete('/system-admin-view/:id', (req, res) => {
-  const sql = "DELETE FROM Crew WHERE CrewID =?";
+  const sql = "DELETE FROM Crew WHERE CrewID = ?";
   const id = req.params.id
 
-  db.query(sql, id, (err, data) => {
-      if (err) return res.json("Error");
+  db.query(sql, [id], (err, data) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ error: "Internal Server Error" });
+      }
       return res.json(data);
   })
 })

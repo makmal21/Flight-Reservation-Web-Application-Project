@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import axios from 'axios';
-import {toast} from 'react-toastify';
+import {toast, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function CancelFlight() {
@@ -41,9 +41,12 @@ function CancelFlight() {
       {
         try {
           await axios.delete('http://localhost:8081/cancel-flight/'+id)
-          toast.success('Flight Deleted Successfully!'); 
-          window.location.reload()
-          toast.success('Flight Deleted Successfully!'); // this doesn't work? - i think need to render in the backend
+          toast.success('Flight Cancelled Successfully!');
+          
+          setTimeout(()=>{
+            window.location.reload()
+          }, 3000)
+          
         } catch (error) {
             console.log(error);
         }
@@ -117,7 +120,7 @@ function CancelFlight() {
                   )}
             </div>
             )}
-            
+         <ToastContainer />   
     </div>
     
     )

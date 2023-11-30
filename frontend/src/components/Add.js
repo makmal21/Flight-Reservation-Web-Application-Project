@@ -9,9 +9,11 @@ function Add (){
     const [flightID, setFlightID] = useState('')
     const navigate = useNavigate();
 
+    //Insert into database api request
     function handleSubmit(event){
         event.preventDefault();
-        axios.post('http://localhost:8081/add', {crewID, name, role, flightID})
+        
+        axios.post('http://localhost:8081/system-admin-view/add', {crewID, name, role, flightID})
         .then(res => {
             console.log(res);
             navigate('/system-admin-view'); 

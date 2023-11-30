@@ -5,6 +5,10 @@ import axios from 'axios';
 import { Link } from 'react-router-dom'
 import '../Admin.css';
 
+//TO DO : UPADTE IS ONLY NEEDED FOR FLIGHT TABLE 
+//FOR CREW AND AIRCRAFT ONLY ADDING AND REMOVING 
+
+
 function SystemAdminView() {
 
   //Array to store data retrieved from Crew table in database
@@ -18,25 +22,26 @@ function SystemAdminView() {
   },[])
 
   const handleDelete = async (id) => {
-    try{
-        await axios.delete('http://localhost:8081/crew/'+id)
+    console.log(id)
+    if(window.confirm('Are you sure you want to remove this crew member with '+id+'?'))
+    {
+      try{
+        await axios.delete('http://localhost:8081/system-admin-view/'+id)
         window.location.reload()
-    }catch(err){
+      }catch(err){
         console.log(err);
+      }
     }
+
 }
   return (
     <div>
         <h2>System Administrator Portal</h2>
-        <p>TO IMPLEMENT: results of SQL queries</p>
-        <div className= 'd-flex vh-100 justify-content-center align-items-center'>
-          {/*'w-50 bg-white rounded p-3'*/}
+        <div className= 'd-flex vh-100 justify-content-right align-items-center'>
           <div className="table-container">
-          
+          <Link to="/system-admin-view/add" className='btn btn-success'>Add Crew +</Link>
             <table className='scrollable-table w-100 bg-white rounded p-3'>
-            
                     <thead>
-                    <Link to="/add" className='btn btn-success justify-content-right'>Add +</Link>
                       <tr>
                       <th>CrewID</th>
                       <th>Name</th>
@@ -53,8 +58,8 @@ function SystemAdminView() {
                                   <td>{data.Role} </td>
                                   <td>{data.FlightID} </td>
                                   <td>
-                                      <Link to={`update/${data.FlightID}`} className='btn btn-primary'>Update</Link>
-                                      <button className='btn btn-danger ms-2' onClick={e =>handleDelete(data.FligthID)}>Delete</button>
+                                      <Link to={`update/${data.CrewID}`} className='btn btn-primary'>Update</Link>
+                                      <button className='btn btn-danger ms-2' onClick={e =>handleDelete(data.CrewID)}>Delete</button>
                                   </td>
                               </tr> 
                           ))

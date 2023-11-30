@@ -34,7 +34,7 @@ function App() {
           <Route path="/cancel-flight" element={<CancelFlight />} />
           <Route path="/system-admin-view" element={<SystemAdminView />} />
           <Route path="/update/:id" element={<Update />} />
-          <Route path="/add" element={<Add />} />
+          <Route path="/system-admin-view/add" element={<Add />} />
           {/* Add more routes as necessary */}
         </Routes>
       </div>

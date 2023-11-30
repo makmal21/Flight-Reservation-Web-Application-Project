@@ -79,55 +79,66 @@ CREATE TABLE Seat (
       ELSE NULL
     END
   ) STORED,
-  FlightID INTEGER AUTO_INCREMENT, 
-  PRIMARY KEY (SeatID),
-  FOREIGN KEY (FlightID) REFERENCES FLIGHT(FlightID)
+  PRIMARY KEY (SeatID)
 );
 
+-- eveything is avliable - NEED TO CHANGE THE seatID in ticket table to unavailable!
+INSERT INTO Seat (SeatID, SeatNo, Type, Status) VALUES
+('1AAA', '1', 'Business Class', 'Available'),
+('1AAB', '2', 'Business Class', 'Available'),
+('1AAC', '3', 'Business Class', 'Available'),
+('1AAD', '4', 'Business Class', 'Available'),
+('1AAE', '5', 'Comfort', 'Available'),
+('1AAF', '6', 'Comfort', 'Available'),
+('1AAG', '7', 'Comfort', 'Available'),
+('1AAH', '8', 'Comfort', 'Available'),
+('1AAI', '9', 'Comfort', 'Available'),
+('1AAJ', '10', 'Comfort', 'Available'),
+('1AAK', '11', 'Ordinary', 'Available'),
+('1AAL', '12', 'Ordinary', 'Available'),
+('1AAM', '13', 'Ordinary', 'Available'),
+('1AAN', '14', 'Ordinary', 'Available'),
+('1AAO', '15', 'Ordinary', 'Available'),
+('1AAP', '16', 'Ordinary', 'Available'),
+('1AAQ', '17', 'Ordinary', 'Available'),
+('1AAR', '18', 'Ordinary', 'Available'),
+('1AAS', '19', 'Ordinary', 'Available'),
+('1AAT', '20', 'Ordinary', 'Available'),
+('1AAU', '21', 'Business Class', 'Available'),
+('1AAV', '22', 'Business Class', 'Available'),
+('1AAW', '23', 'Business Class', 'Available'),
+('1AAX', '24', 'Business Class', 'Available'),
+('1AAY', '25', 'Comfort', 'Available'),
+('1AAZ', '26', 'Comfort', 'Available'),
+('2AAA', '27', 'Comfort', 'Available'),
+('2AAB', '28', 'Comfort', 'Available'),
+('2AAC', '29', 'Comfort', 'Available'),
+('2AAD', '30', 'Comfort', 'Available'),
+('2AAE', '31', 'Ordinary', 'Available'),
+('2AAF', '32', 'Ordinary', 'Available'),
+('2AAG', '33', 'Ordinary', 'Available'),
+('2AAH', '34', 'Ordinary', 'Available'),
+('2AAI', '35', 'Ordinary', 'Available'),
+('2AAJ', '36', 'Ordinary', 'Available'),
+('2AAK', '37', 'Ordinary', 'Available'),
+('2AAL', '38', 'Ordinary', 'Available'),
+('2AAM', '39', 'Ordinary', 'Available'),
+('2AAN', '40', 'Ordinary', 'Available');
 
-
--- eveything is avliable so that way once its picked it can be changed to unavaible ? 
-INSERT INTO Seat (SeatID, SeatNo, Type, Status, FlightID) VALUES
-('1AAA', '1', 'Business Class', 'Available', 1),
-('1AAB', '2', 'Business Class', 'Available', 1),
-('1AAC', '3', 'Business Class', 'Available', 1),
-('1AAD', '4', 'Business Class', 'Available', 1),
-('1AAE', '5', 'Comfort', 'Available', 1),
-('1AAF', '6', 'Comfort', 'Available', 1),
-('1AAG', '7', 'Comfort', 'Available', 1),
-('1AAH', '8', 'Comfort', 'Available', 1),
-('1AAI', '9', 'Comfort', 'Available', 1),
-('1AAJ', '10', 'Comfort', 'Available', 1),
-('1AAK', '11', 'Ordinary', 'Available', 1),
-('1AAL', '12', 'Ordinary', 'Available', 1),
-('1AAM', '13', 'Ordinary', 'Available', 1),
-('1AAN', '14', 'Ordinary', 'Available', 1),
-('1AAO', '15', 'Ordinary', 'Available', 1),
-('1AAP', '16', 'Ordinary', 'Available', 1),
-('1AAQ', '17', 'Ordinary', 'Available', 1),
-('1AAR', '18', 'Ordinary', 'Available', 1),
-('1AAS', '19', 'Ordinary', 'Available', 1),
-('1AAT', '20', 'Ordinary', 'Available', 1),
-('1AAU', '21', 'Business Class', 'Available', 1),
-('1AAV', '22', 'Business Class', 'Available', 1),
-('1AAW', '23', 'Business Class', 'Available', 1),
-('1AAX', '24', 'Business Class', 'Available', 1),
-('1AAY', '25', 'Comfort', 'Available', 1),
-('1AAZ', '26', 'Comfort', 'Available', 1),
-('2AAA', '27', 'Comfort', 'Available', 1),
-('2AAB', '28', 'Comfort', 'Available', 1),
-('2AAC', '29', 'Comfort', 'Available', 1),
-('2AAD', '30', 'Comfort', 'Available', 1),
-('2AAE', '31', 'Ordinary', 'Available', 1),
-('2AAF', '32', 'Ordinary', 'Available', 1),
-('2AAG', '33', 'Ordinary', 'Available', 1),
-('2AAH', '34', 'Ordinary', 'Available', 1),
-('2AAI', '35', 'Ordinary', 'Available', 1),
-('2AAJ', '36', 'Ordinary', 'Available', 1),
-('2AAK', '37', 'Ordinary', 'Available', 1),
-('2AAL', '38', 'Ordinary', 'Available', 1),
-('2AAM', '39', 'Ordinary', 'Available', 1),
-('2AAN', '40', 'Ordinary', 'Available', 1);
+-- FlightSeat Table 
+DROP TABLE IF EXISTS Flight_Seat;
+CREATE TABLE FLight_Seat (
+  SeatID VARCHAR(20) NOT NULL,
+  FlightID INTEGER NOT NULL, 
+  PRIMARY KEY (SeatID, FlightID),
+  FOREIGN KEY (FlightID) REFERENCES Flight(FlightID),
+  FOREIGN KEY (SeatID) REFERENCES Seat(SeatID)
+  );
+  
+-- Cartesian Product to get all combinations   
+INSERT INTO Flight_Seat (SeatID, FlightID)
+SELECT Seat.SeatID, Flight.FlightID
+FROM Seat, Flight;
 
 -- Create Payment Table
 DROP TABLE IF EXISTS Payment;
@@ -278,7 +289,16 @@ VALUES
 ('A001', 'Bombardier CRJ Series', 40, 1),
 ('A002', 'De Havilland Canada DHC-8 Dash 8', 40, 2);
 
-
+-- do we want admin to be able to assign a flight assignment? or have this table for that? 
+/*CREATE TABLE CrewAssignment (
+  CrewID VARCHAR(10) NOT NULL,
+  AircraftID VARCHAR(10) NOT NULL,
+  FlightID INTEGER NOT NULL,
+  PRIMARY KEY (CrewID, AircraftID, FlightID),
+  FOREIGN KEY (CrewID) REFERENCES Crew(CrewID),
+  FOREIGN KEY (AircraftID) REFERENCES Aircraft(AircraftID),
+  FOREIGN KEY (FlightID) REFERENCES Flight(FlightID)
+);*/
 
 -- ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
 -- flush privileges;

@@ -27,11 +27,16 @@ function SeatSelect() {
   }, [flightId]);
 
   const handleSeatClick = (seatNo) => {
-    setSelectedSeat(seatNo);
+    const seat = seatStatuses.find(s => parseInt(s.SeatNo) === seatNo);
+    if (seat) {
+      setSelectedSeat(seat);  // Store the entire seat object
+    }
   };
 
   const handlePaymentClick = () => {
-    navigate('/payment', { state: { selectedSeat, flightId } });
+    if (selectedSeat) {
+      navigate('/payment', { state: { selectedSeat: selectedSeat, flightId: flightId } }); //pushes flightID and selectedSeat as object
+    }
   };
 
   console.log(seatStatuses);

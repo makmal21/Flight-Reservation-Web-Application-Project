@@ -36,7 +36,13 @@ INSERT INTO Flight (Origin, Destination, DestinationDate, Price) VALUES
 ('Halifax', 'Winnipeg', '2023-12-13', 450),
 ('Calgary', 'Vancouver', '2023-12-01', 1000),
 ('Toronto', 'Vancouver', '2023-12-01', 1000),
-('Winnipeg', 'Halifax', '2023-12-15', 460);
+('Winnipeg', 'Halifax', '2023-12-15', 460),
+
+('Calgary', 'Vancouver', '2023-12-07', 1000),
+('Calgary', 'Vancouver', '2023-12-09', 1000),
+('Calgary', 'Vancouver', '2023-12-10', 1000),
+('Calgary', 'Vancouver', '2023-12-12', 1000);
+
 /*('Calgary', 'Vancouver', '2023-12-01', 530),
 ('Calgary', 'Vancouver', '2023-12-01', 800),
 ('Calgary', 'Vancouver', '2023-12-01', 340),

@@ -6,6 +6,8 @@ import Col from 'react-bootstrap/Col'; // Import Col
 
 function Payment() {
   const [paymentDetails, setPaymentDetails] = useState({
+    passengerName: '', // Added passenger name
+    email: '', // Added email
     cardNumber: '',
     cardholderName: '',
     expiryMonth: '',
@@ -45,6 +47,13 @@ function Payment() {
       return;
     }
 
+      // Email validation using regular expression
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(paymentDetails.email)) {
+      setValidationError('Invalid email address.');
+    return;
+  }
+
     // Process payment details if validation passes
     console.log(paymentDetails);
     // Add your logic to process the payment here
@@ -60,6 +69,32 @@ function Payment() {
 
           <Form onSubmit={handleSubmit}>
 
+
+            {/* Passenger Name input */}
+            <Form.Group className="mb-3">
+              <Form.Label>Passenger Name</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter Passenger Name"
+                name="passengerName"
+                value={paymentDetails.passengerName}
+                onChange={handleInputChange}
+                required
+              />
+            </Form.Group>
+
+            {/* Email input */}
+            <Form.Group className="mb-3">
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+                type="email" // Email type for proper validation
+                placeholder="Enter Email"
+                name="email"
+                value={paymentDetails.email}
+                onChange={handleInputChange}
+                required
+              />
+            </Form.Group>
 
             <Form.Group className="mb-3">
               <Form.Label>Card Number</Form.Label>

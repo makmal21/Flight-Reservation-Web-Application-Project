@@ -40,11 +40,10 @@ app.post('/browse-passenger-list', (req, res) => {
 app.post('/Flights', (req, res) => {
   const query = `
     SELECT * FROM Flight
-    WHERE Origin = ? AND Destination = ? AND DestinationDate = ?`;
+    WHERE Origin = ? AND Destination = ?`;
   const values =[
     req.body.from, 
-    req.body.to,
-    req.body.departureDate]
+    req.body.to]
 
   db.query(query, values, (err, results) => {
     if (err) {
@@ -78,7 +77,7 @@ app.delete('/cancel-flight/:id',(req, res)=> {
 })
 
 
-//Get origin flights
+//Get origin options from homepage
 app.get('/api/flights/origin', (req, res) => {
   const sql = "SELECT DISTINCT Origin FROM Flight";
   db.query(sql, (err, results) => {
@@ -93,7 +92,7 @@ app.get('/api/flights/origin', (req, res) => {
   });
 });
 
-//Get Destinations flights
+//Get Destinations options from homepage (based on selected Origin)
 app.get('/api/flights/destinations/:origin', (req, res) => {
   const origin = req.params.origin;
   const sql = "SELECT DISTINCT Destination FROM Flight WHERE Origin = ?";

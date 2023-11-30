@@ -15,28 +15,14 @@ function Home() {
     const [formData, setFormData] = useState({
         from: '',
         to: '',
-        departureDate: '',
+        // departureDate: '',
         guests: '1',
     });
 
     const [locationsFrom, setLocationsFrom] = useState([]);
     const [locationsTo, setLocationsTo] = useState([]);
     
-    // useEffect(() => {
-    //     const fetchLocations = async () => {
-    //         try {
-    //             const responseFrom = await axios.get('/api/flights/origin');
-    //             setLocationsFrom(responseFrom.data);
-    
-    //             const responseTo = await axios.get('/api/flights/destinations');
-    //             setLocationsTo(responseTo.data);
-    //         } catch (error) {
-    //             console.error("Error fetching locations:", error);
-    //         }
-    //     };
-    
-    //     fetchLocations();
-    // }, []);
+
 
     // This useEffect hook remains mostly the same, it fetches the origins when the component mounts
     useEffect(() => {
@@ -85,14 +71,6 @@ function Home() {
         navigate('/flights', { state: formData })
     }; 
 
-    //EXPRESS JS TEST STUFF: UNCOMMENT FOR TESTING PROXY
-    // if (isLoading) return <div>Loading...</div>;
-    // if (error) return <div>An error has occurred: {error.message}</div>;
-    // console.log(data)
-
-
-    // const locationOptions = ["Calgary", "Toronto", "Vancouver", 
-    // "Montreal", "Edmonton", "Ottawa", "Winnipeg", "Halifax"];
 
     return (
         <div>
@@ -127,12 +105,13 @@ function Home() {
                     ))}
                 </select>
 
-                <label htmlFor="departure-date">Departure date</label>
-                <input type="date" id="departure-date" name="departureDate" onChange={handleInputChange} value={formData.departureDate}/>
+                {/* <label htmlFor="departure-date">Departure date</label>
+                <input type="date" id="departure-date" name="departureDate" onChange={handleInputChange} value={formData.departureDate}/> */}
 
-                <button className="flight-search-button" // Add a specific class name
+
+                <button className="flight-search-button" 
                 type="submit"
-                disabled={!formData.from || !formData.to || !formData.departureDate || formData.from===formData.to} >
+                disabled={!formData.from || !formData.to  || formData.from===formData.to} >
                 Get Flights
                 </button>
             </form>

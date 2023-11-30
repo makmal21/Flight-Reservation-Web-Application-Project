@@ -23,8 +23,8 @@ INSERT INTO Flight (Origin, Destination, DepartureDate, Price) VALUES
   ('Edmonton', 'Ottawa', '2023-12-09 10:15:00', 350),
   ('Ottawa', 'Edmonton', '2023-12-11 13:45:00', 360),
   ('Halifax', 'Winnipeg', '2023-12-13 18:30:00', 450),
-  ('Calgary', 'Vancouver', '2023-12-01 20:00:00', 1000),
-  ('Toronto', 'Vancouver', '2023-12-01 21:15:00', 1000),
+  ('Calgary', 'Vancouver', '2023-12-11 20:00:00', 1000),
+  ('Toronto', 'Vancouver', '2023-12-11 21:15:00', 1000),
   ('Winnipeg', 'Halifax', '2023-12-15 11:00:00', 460),
   ('Calgary', 'Vancouver', '2023-12-07 14:30:00', 1000),
   ('Calgary', 'Vancouver', '2023-12-09 16:45:00', 1000),
@@ -71,7 +71,7 @@ CREATE TABLE Seat (
   SeatNo VARCHAR(20) COMMENT 'Seat number in flight',
   Type VARCHAR(20) COMMENT 'Ordinary, Comfort, Business Class ',
   Status VARCHAR(20) COMMENT 'Available, Unavailable',
-  Price INTEGER GENERATED ALWAYS AS (
+  Price DECIMAL(10, 2) GENERATED ALWAYS AS (
     CASE
       WHEN Type = 'Ordinary' THEN 30
       WHEN Type = 'Comfort' THEN 1.4 * 30  -- 40% more than Ordinary
@@ -84,37 +84,40 @@ CREATE TABLE Seat (
   FOREIGN KEY (FlightID) REFERENCES FLIGHT(FlightID)
 );
 -- need to add logic so price associates with seat type 
-INSERT INTO Seat (SeatID, SeatNo, Type, Status) VALUES
-('85f8667e-c', '39S', 'Comfort', 'Unavailable'),
-('96e1d19d-4', '20Q', 'Ordinary', 'Unavailable'),
-('c536d8c8-7', '11G', 'Ordinary', 'Unavailable'),
-('647abf05-0', '7R', 'Business Class', 'Available'),
-('a977311a-7', '45G', 'Comfort', 'Available'),
-('ee7bf488-e', '31V', 'Comfort', 'Available'),
-('dc55eb42-0', '15L', 'Ordinary', 'Unavailable'),
-('6c9c4c85-0', '40X', 'Business Class', 'Available'),
-('ac942807-8', '27Q', 'Ordinary', 'Available'),
-('5dd61f55-3', '27G', 'Business Class', 'Unavailable'),
-('98c6d610-1', '14D', 'Ordinary', 'Available'),
-('74a1ca2f-e', '10Q', 'Business Class', 'Unavailable'),
-('171a22e3-c', '26L', 'Ordinary', 'Available'),
-('ab1ebc23-b', '43Z', 'Business Class', 'Available'),
-('ab10fccf-f', '42R', 'Ordinary', 'Available'),
-('756d1b07-8', '19P', 'Ordinary', 'Unavailable'),
-('1aae4ced-9', '7J', 'Ordinary', 'Available'),
-('050b09bf-c', '12A', 'Business Class', 'Available'),
-('ec7865ca-6', '20Z', 'Comfort', 'Available'),
-('93b95dd8-1', '13J', 'Business Class', 'Unavailable'),
-('b2793ce6-6', '5V', 'Comfort', 'Available'),
-('acf9375d-4', '49X', 'Ordinary', 'Available'),
-('146db653-b', '35P', 'Ordinary', 'Unavailable'),
-('1cf34ff5-b', '24Q', 'Comfort', 'Unavailable'),
-('861dfe5f-d', '15H', 'Comfort', 'Unavailable'),
-('b9be886f-9', '6T', 'Ordinary', 'Available'),
-('42e17a29-7', '49C', 'Ordinary', 'Unavailable'),
-('486b30fe-1', '25H', 'Ordinary', 'Available'),
-('cba55c06-2', '44V', 'Comfort', 'Unavailable'),
-('0778072a-c', '36L', 'Business Class', 'Available');
+-- NEED TO FIX SEAT TABLE - check if price works and re-organize the seat type. 
+-- start off with seats all avaliable and then maybe as we start having a purchase go
+-- through then ticket table is populated? 
+INSERT INTO Seat (SeatID, SeatNo, Type, Status, FlightID) VALUES
+('85f8667e-c', '39S', 'Comfort', 'Unavailable', 1),
+('96e1d19d-4', '20Q', 'Ordinary', 'Unavailable', 1),
+('c536d8c8-7', '11G', 'Ordinary', 'Unavailable', 1),
+('647abf05-0', '7R', 'Business Class', 'Available', 1),
+('a977311a-7', '45G', 'Comfort', 'Available', 1),
+('ee7bf488-e', '31V', 'Comfort', 'Available', 1),
+('dc55eb42-0', '15L', 'Ordinary', 'Unavailable', 1),
+('6c9c4c85-0', '40X', 'Business Class', 'Available', 1),
+('ac942807-8', '27Q', 'Ordinary', 'Available', 1),
+('5dd61f55-3', '27G', 'Business Class', 'Unavailable', 1),
+('98c6d610-1', '14D', 'Ordinary', 'Available', 1),
+('74a1ca2f-e', '10Q', 'Business Class', 'Unavailable', 1),
+('171a22e3-c', '26L', 'Ordinary', 'Available', 1),
+('ab1ebc23-b', '43Z', 'Business Class', 'Available', 1),
+('ab10fccf-f', '42R', 'Ordinary', 'Available', 1),
+('756d1b07-8', '19P', 'Ordinary', 'Unavailable', 1),
+('1aae4ced-9', '7J', 'Ordinary', 'Available',1 ),
+('050b09bf-c', '12A', 'Business Class', 'Available', 1),
+('ec7865ca-6', '20Z', 'Comfort', 'Available', 1),
+('93b95dd8-1', '13J', 'Business Class', 'Unavailable', 1),
+('b2793ce6-6', '5V', 'Comfort', 'Available', 1),
+('acf9375d-4', '49X', 'Ordinary', 'Available', 1),
+('146db653-b', '35P', 'Ordinary', 'Unavailable', 1),
+('1cf34ff5-b', '24Q', 'Comfort', 'Unavailable', 1),
+('861dfe5f-d', '15H', 'Comfort', 'Unavailable', 1),
+('b9be886f-9', '6T', 'Ordinary', 'Available',1),
+('42e17a29-7', '49C', 'Ordinary', 'Unavailable', 1),
+('486b30fe-1', '25H', 'Ordinary', 'Available', 1),
+('cba55c06-2', '44V', 'Comfort', 'Unavailable', 1),
+('0778072a-c', '36L', 'Business Class', 'Available',1 );
 
 -- Create Payment Table
 DROP TABLE IF EXISTS Payment;
@@ -226,6 +229,46 @@ INSERT INTO Ticket (TicketID, Name, Email, FlightID, PaymentID, SeatID) VALUES
 ('qtq1da', 'Ronald Jacobson', 'rjacobson@example.com', 3, 'dd6c37', 'c536d8c8-7'),
 ('rpia6h', 'Valerie Fan', 'valerie93@example.com', 29, '38408f', 'cba55c06-2'),
 ('ywr2sz', 'Yoland Deez', 'yolanda06@example.com', 7, '953efd', 'dc55eb42-0');
+
+
+
+-- SYSTEM ADMIN ACCESS TABLES 
+
+DROP TABLE IF EXISTS Crew;
+CREATE TABLE Crew (
+  CrewID VARCHAR(10) NOT NULL,
+  Name VARCHAR(50),
+  Role VARCHAR(25) COMMENT 'Pilot, Co-pilot, Flight Attendant', 
+  FlightID INTEGER COMMENT 'Flight crew assigned',
+  FOREIGN KEY (FlightID) REFERENCES FLIGHT(FlightID)
+);
+INSERT INTO Crew (CrewID, Name, Role, FlightID) VALUES
+('C001', 'John Smith', 'Pilot', 1),
+('C002', 'Emily Johnson', 'Pilot', 2),
+('C003', 'Michael Davis', 'Co-pilot', 1),
+('C004', 'Sara Miller', 'Co-pilot', 2),
+('C005', 'David White', 'Flight Attendant', 1),
+('C006', 'Jessica Lee', 'Flight Attendant', 1),
+('C007', 'Brian Wilson', 'Flight Attendant', 1),
+('C008', 'Linda Brown', 'Flight Attendant', 1),
+('C009', 'Alex Turner', 'Flight Attendant', 2),
+('C010', 'Sophia Garcia', 'Flight Attendant', 2),
+('C011', 'Ella Johnson', 'Flight Attendant', 2),
+('C012', 'James Anderson', 'Flight Attendant', 2);
+
+CREATE TABLE Aircraft (
+  AircraftID VARCHAR(10) NOT NULL,
+  Model VARCHAR(50) COMMENT 'Bombardier CRJ Series,De Havilland Canada DHC-8 Dash 8', 
+  Capacity INTEGER COMMENT '40 Seats',
+  FlightID INTEGER COMMENT 'aircraft assigned for flight - constantly updated by system admin',
+  PRIMARY KEY (AircraftID),
+  FOREIGN KEY (FlightID) REFERENCES FLIGHT(FlightID)
+);
+
+INSERT INTO Aircraft (AircraftID, Model, Capacity, FlightID)
+VALUES 
+('A001', 'Bombardier CRJ Series', 40, 1),
+('A002', 'De Havilland Canada DHC-8 Dash 8', 40, 2);
 
 
 

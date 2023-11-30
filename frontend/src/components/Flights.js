@@ -52,8 +52,8 @@ function Flights() {
                         flights.map((data,i)=> (
                             <tr key= {i}> 
                                 <td>{data.FlightID} </td>
-                                {/*<td>{data.Origin} </td>
-                                <td>{data.Destination} </td>*/}
+                                <td>{data.Origin} </td>
+                                <td>{data.Destination} </td>*
                                 <td>{moment(data.DepartureDate).format('YYYY-MM-DD HH:mm:ss')} </td>
                                 <td>{data.Price} </td>
                                 

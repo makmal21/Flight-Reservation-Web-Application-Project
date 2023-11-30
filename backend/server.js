@@ -34,7 +34,6 @@ app.post('/browse-passenger-list', (req, res) => {
   })
 });
 
-
 // Endpoint to handle user input and fetch data from MySQL
 //Get the query based on select Flight
 app.post('/Flights', (req, res) => {
@@ -113,16 +112,56 @@ const seatRoutes = require('./routes/seatRoute');
 app.use('/api', seatRoutes);
 
 
+/*SYSTEM ADMIN SQL QUERIES */
 
-/* app.delete('/cancel-flight',(req, res)=> {
-  const sql ="DELETE FROM Ticket WHERE `TicketID` = ?"
-  const value = req.body.TicketID
-
-  db.query(sql, value, (err, data) =>{
-    if (err) return res.json("Error");
-    return res.json(data);
+//Fetch data from sql, get query 
+app.get("/system-admin-view", (req, res) => {
+  const sql = "SELECT * FROM Crew";
+  db.query(sql, (err, data) => {
+      if(err) return res.json("Error");
+      return res.json(data);
   })
-}) */
+});
+
+//Put data entered into Crew relation table 
+app.put('/update/:id', (req, res) => {
+  const sql = "UPDATE Crew set `Name` = ?, `Role` = ?, `FlightID` =?  where ID = ?";
+  const values = [
+      req.body.name, 
+      req.body.role,
+      req.body.flightID
+  ]  
+  const id = req.params.id
+  db.query(sql, [...values, id], (err, data) => {
+      if (err) return res.json("Error");
+      return res.json(data);
+  })
+})
+
+//add into
+app.post('/add', (req, res) => {
+  const sql = "INSERT INTO Crew ('CrewID','Name', 'Role', 'FlightID') VALUES (?)";
+  const values = [
+      req.body.name, 
+      req.body.role, 
+      req.body.flightID
+  ] 
+  db.query(sql, [values], (err, data) => {
+      if (err) return res.json("Error");
+      return res.json(data);
+  })
+})
+
+//Delete data that matches ID
+app.delete('/system-admin-view/:id', (req, res) => {
+  const sql = "DELETE FROM Crew WHERE CrewID =?";
+  const id = req.params.id
+
+  db.query(sql, id, (err, data) => {
+      if (err) return res.json("Error");
+      return res.json(data);
+  })
+})
 
 // Start the server
 const port = 8081;

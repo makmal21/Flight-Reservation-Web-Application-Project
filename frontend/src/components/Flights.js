@@ -62,8 +62,8 @@ function Flights() {
                           className={selectedFlight === data.FlightID ? 'selected-flight' : ''}
                           style={{ cursor: 'pointer' }}> 
                                 <td>{data.FlightID} </td>
-                                {/*<td>{data.Origin} </td>
-                                <td>{data.Destination} </td>*/}
+                                <td>{data.Origin} </td>
+                                <td>{data.Destination} </td>
                                 <td>{moment(data.DepartureDate).format('YYYY-MM-DD HH:mm:ss')} </td>
                                 <td>{data.Price} </td>
                                 

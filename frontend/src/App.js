@@ -13,6 +13,8 @@ import Login from './components/Login';
 import BrowsePassengerList from './components/BrowsePassengerList'; 
 import CancelFlight from './components/CancelFlight'; 
 import SystemAdminView from './components/SystemAdminView'; 
+import Update from './components/Update'; 
+import Add from './components/Add.js'; 
 
 
 
@@ -31,6 +33,8 @@ function App() {
           <Route path="/browse-passenger-list" element={<BrowsePassengerList />} />
           <Route path="/cancel-flight" element={<CancelFlight />} />
           <Route path="/system-admin-view" element={<SystemAdminView />} />
+          <Route path="/update/:id" element={<Update />} />
+          <Route path="/add" element={<Add />} />
           {/* Add more routes as necessary */}
         </Routes>
       </div>

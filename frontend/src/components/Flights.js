@@ -46,10 +46,9 @@ function Flights() {
                 <table className='w-50 table table-bordered table-striped'>
                    <thead>
                     <tr>
-                    <th>FlightNumber</th>
-                    {/*<th>from</th>
-                    <th>to</th>
-                    <th>Date</th>*/}
+                    <th>FlightID</th>
+                    <th>Destination</th>
+                    <th>Origin</th>
                     <th>Departure Date</th>
                     <th>Price CAD$</th>
                     </tr>                    

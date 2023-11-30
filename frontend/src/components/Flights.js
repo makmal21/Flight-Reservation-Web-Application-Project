@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../Flights.css';
+import moment from 'moment'; //new library for formating date
 
 
 
@@ -42,7 +43,7 @@ function Flights() {
                     {/*<th>from</th>
                     <th>to</th>
                     <th>Date</th>*/}
-                    <th>Date</th>
+                    <th>Departure Date</th>
                     <th>Price CAD$</th>
                     </tr>                    
                    </thead>
@@ -52,9 +53,8 @@ function Flights() {
                             <tr key= {i}> 
                                 <td>{data.FlightID} </td>
                                 {/*<td>{data.Origin} </td>
-                                <td>{data.Destination} </td>
-                                <td>{data.DestinationDate} </td>*/}
-                                <td>{data.DestinationDate} </td>
+                                <td>{data.Destination} </td>*/}
+                                <td>{moment(data.DepartureDate).format('YYYY-MM-DD HH:mm:ss')} </td>
                                 <td>{data.Price} </td>
                                 
                             </tr> 

@@ -3,82 +3,66 @@ CREATE DATABASE AIRLINE;
 USE AIRLINE;
 
 
--- Create STUDENT Table
-DROP TABLE IF EXISTS STUDENT;
-CREATE TABLE STUDENT (
-  ID int NOT NULL ,
-  FName VARCHAR(20) ,
-  Email VARCHAR(100) ,
-  PRIMARY KEY (ID)  
-);
-INSERT INTO STUDENT (ID, FName, Email) VALUES 
-('2585', 'Laura', 'Laura@gmail.com'),
-('2534', 'Sam', 'sam@gmail.com') ;
-
 -- Create Flight Table
 DROP TABLE IF EXISTS Flight;
 CREATE TABLE Flight (
   FlightID int NOT NULL AUTO_INCREMENT COMMENT 'Primary key of activity. Should auto increment.',
   Origin VARCHAR(20) COMMENT 'Origin of flight.',
   Destination VARCHAR(20) COMMENT 'Destination of flight.',
-  DestinationDate date,
+  DepartureDate DATETIME,
   Price Integer,
   PRIMARY KEY (FlightID)  
 );
 
-INSERT INTO Flight (Origin, Destination, DestinationDate, Price) VALUES
-('Calgary', 'Vancouver', '2023-12-01', 500),
-('Vancouver', 'Toronto', '2023-12-03',  510),
-('Montreal', 'Calgary', '2023-12-05',  400),
-('Calgary', 'Montreal', '2023-12-07', 420),
-('Edmonton', 'Ottawa', '2023-12-09', 350),
-('Ottawa', 'Edmonton', '2023-12-11', 360),
-('Halifax', 'Winnipeg', '2023-12-13', 450),
-('Calgary', 'Vancouver', '2023-12-01', 1000),
-('Toronto', 'Vancouver', '2023-12-01', 1000),
-('Winnipeg', 'Halifax', '2023-12-15', 460),
+-- change destinationDate to departuredate : will need to update code as well
+INSERT INTO Flight (Origin, Destination, DepartureDate, Price) VALUES
+  ('Calgary', 'Vancouver', '2023-12-01 12:00:00', 500),
+  ('Vancouver', 'Toronto', '2023-12-03 14:30:00', 510),
+  ('Montreal', 'Calgary', '2023-12-05 08:45:00', 400),
+  ('Calgary', 'Montreal', '2023-12-07 16:20:00', 420),
+  ('Edmonton', 'Ottawa', '2023-12-09 10:15:00', 350),
+  ('Ottawa', 'Edmonton', '2023-12-11 13:45:00', 360),
+  ('Halifax', 'Winnipeg', '2023-12-13 18:30:00', 450),
+  ('Calgary', 'Vancouver', '2023-12-01 20:00:00', 1000),
+  ('Toronto', 'Vancouver', '2023-12-01 21:15:00', 1000),
+  ('Winnipeg', 'Halifax', '2023-12-15 11:00:00', 460),
+  ('Calgary', 'Vancouver', '2023-12-07 14:30:00', 1000),
+  ('Calgary', 'Vancouver', '2023-12-09 16:45:00', 1000),
+  ('Calgary', 'Vancouver', '2023-12-10 09:30:00', 1000),
+  ('Calgary', 'Vancouver', '2023-12-12 19:00:00', 1000);
 
-('Calgary', 'Vancouver', '2023-12-07', 1000),
-('Calgary', 'Vancouver', '2023-12-09', 1000),
-('Calgary', 'Vancouver', '2023-12-10', 1000),
-('Calgary', 'Vancouver', '2023-12-12', 1000);
 
-/*('Calgary', 'Vancouver', '2023-12-01', 530),
-('Calgary', 'Vancouver', '2023-12-01', 800),
-('Calgary', 'Vancouver', '2023-12-01', 340),
-('Calgary', 'Vancouver', '2023-12-01', 230);*/
-
-INSERT INTO Flight (Origin, Destination, DestinationDate, Price) VALUES
-('Taylorview', 'New Willie', '2023-12-18', 553),
-('Sydneyview', 'Michelleside', '2023-12-09', 342),
-('West George', 'Stevenshaven', '2023-12-14', 392),
-('Haaschester', 'Kaylastad', '2023-11-25', 395),
-('Lake Dustinmouth', 'Colemanberg', '2023-11-23', 451),
-('Annemouth', 'Kellyport', '2023-12-15', 586),
-('South Jared', 'East Jody', '2023-12-03', 345),
-('Scottview', 'Port Madison', '2023-11-30', 438),
-('Phamville', 'West Aaron', '2023-12-14', 567),
-('Hernandezstad', 'Port Tammy', '2023-12-02', 364),
-('Heatherchester', 'Barnesborough', '2023-12-15', 452),
-('Osbornemouth', 'Alexanderview', '2023-12-08', 574),
-('Port Jonathan', 'New Jamesville', '2023-12-10', 307),
-('Jensenville', 'Evansfort', '2023-12-02', 546),
-('South Justin', 'Nelsonstad', '2023-12-15', 387),
-('Matthewsburgh', 'Vanessaborough', '2023-12-18', 511),
-('Cabrerafort', 'Lake Jeanetteton', '2023-11-27', 370),
-('Smithburgh', 'Port Stevenhaven', '2023-12-05', 576),
-('Bryanhaven', 'Brianberg', '2023-12-06', 578),
-('Lake Jennifer', 'Brianhaven', '2023-12-04', 600),
-('Underwoodport', 'Lake Patricia', '2023-12-05', 350),
-('New Caleb', 'Johnsontown', '2023-12-16', 398),
-('Port Jonathanfort', 'North John', '2023-12-15', 495),
-('Herringmouth', 'North Michael', '2023-12-18', 482),
-('Port Douglasbury', 'West Roberta', '2023-12-03', 336),
-('Markside', 'West Stephanieburgh', '2023-11-25', 448),
-('North Angela', 'North Robertville', '2023-12-09', 598),
-('Markmouth', 'Port Lisa', '2023-12-19', 343),
-('Rhondamouth', 'Lake Kara', '2023-12-18', 381),
-('New Samantha', 'South Williamstad', '2023-11-28', 595);
+INSERT INTO Flight (Origin, Destination, DepartureDate, Price) VALUES
+('Calgary', 'Vancouver', '2023-12-18 12:00:00', 553),
+('Toronto', 'Los Angeles', '2023-12-09 14:30:00', 342),
+('Montreal', 'San Francisco', '2023-12-14 08:45:00', 392),
+('Vancouver', 'Chicago', '2023-11-25 16:20:00', 395),
+('Calgary', 'Ottawa', '2023-11-23 10:15:00', 451),
+('Calgary', 'San Francisco', '2023-12-15 18:30:00', 586),
+('Winnipeg', 'Halifax', '2023-12-03 20:00:00', 345),
+('Los Angeles', 'Vancouver', '2023-11-30 21:15:00', 438),
+('Calgary', 'Toronto', '2023-12-14 09:30:00', 567),
+('Winnipeg', 'Halifax', '2023-12-02 11:00:00', 364),
+('Montreal', 'Vancouver', '2023-12-15 14:30:00', 452),
+('Calgary', 'Vancouver', '2023-12-08 16:45:00', 574),
+('Toronto', 'Vancouver', '2023-12-10 19:30:00', 307),
+('Calgary', 'San Francisco', '2023-12-12 09:00:00', 546),
+('Calgary', 'New York', '2023-12-15 11:45:00', 387),
+('Calgary', 'Los Angeles', '2023-12-18 08:30:00', 511),
+('Vancouver', 'Toronto', '2023-11-27 14:15:00', 370),
+('Ottawa', 'Calgary', '2023-12-05 22:00:00', 576),
+('Calgary', 'Vancouver', '2023-12-06 13:15:00', 578),
+('Calgary', 'Vancouver', '2023-12-04 07:30:00', 600),
+('Calgary', 'Vancouver', '2023-12-05 18:45:00', 350),
+('Halifax', 'Vancouver', '2023-12-16 10:30:00', 398),
+('Winnipeg', 'Vancouver', '2023-12-15 12:15:00', 495),
+('Toronto', 'Vancouver', '2023-12-18 16:00:00', 482),
+('Vancouver', 'Calgary', '2023-12-03 09:45:00', 336),
+('Vancouver', 'Montreal', '2023-11-25 11:30:00', 448),
+('Vancouver', 'Toronto', '2023-12-09 14:15:00', 598),
+('Halifax', 'Calgary', '2023-12-19 16:30:00', 343),
+('Los Angeles', 'Calgary', '2023-12-18 20:45:00', 381),
+('Calgary', 'Toronto', '2023-11-28 22:00:00', 595);
 
 -- Create Seat Table
 DROP TABLE IF EXISTS Seat;
@@ -177,40 +161,40 @@ DROP TABLE IF EXISTS User;
 CREATE TABLE User (
   Email VARCHAR(50) NOT NULL,
   Password VARCHAR(20),
-  StaffFlag VARCHAR(1) COMMENT 'Y OR N',
+  StaffFlag BOOLEAN COMMENT '1 for User is a staff OR 0 for User is not a staff',
   PRIMARY KEY (Email)
 );
 INSERT INTO User (Email, Password, StaffFlag) VALUES
-('rgordon@example.net', '&58r8#Fc_x', 'N'),
-('rjacobson@example.com', 'CXVhd9Xb^s', 'N'),
-('martinnewton@example.net', 'S*P0U%mt^8', 'Y'),
-('dakotavincent@example.org', ')WjUo$jb83', 'Y'),
-('bjones@example.org', 'p)e^Z0Hxi1', 'Y'),
-('valerie93@example.com', '5(0jXb6TDr', 'N'),
-('leejohn@example.com', '2$T(RizJ+N', 'Y'),
-('donald13@example.com', '(doFc)zr9a', 'N'),
-('landerson@example.com', '+3VU*foydA', 'N'),
-('jonesjoshua@example.org', '25HPAhYj#5', 'N'),
-('kimberlyking@example.net', 'F#rf5HHK!r', 'Y'),
-('fyoung@example.org', 'su)MIOWH@9', 'N'),
-('yolanda06@example.com', '&%9v)QeMg1', 'N'),
-('lisa10@example.org', '%b5H3qY2B*', 'Y'),
-('daniel69@example.com', '&9KGqhbk4X', 'Y'),
-('nancyfloyd@example.com', '!^2FsYAe(o', 'Y'),
-('peter01@example.net', '!RhXdPz*5%', 'Y'),
-('nataliecline@example.org', 'tn3HTHjRq*', 'Y'),
-('gjones@example.com', '$uz8cOBgD$', 'Y'),
-('livingstonrhonda@example.org', '8%k36Wbyf8', 'N'),
-('combsjennifer@example.org', '1_HiFG+x^w', 'N'),
-('stephanienewton@example.net', '!h!iN!QZ$2', 'Y'),
-('mfrazier@example.net', '*45KjyYz@W', 'Y'),
-('greenmanuel@example.org', '(^8rO5i(tF', 'N'),
-('campbellbrandon@example.net', 'iP9JI7xVL&', 'N'),
-('uwilliams@example.org', 'a@g6D6_Orl', 'Y'),
-('butlersally@example.org', '+A0Y7UrQj&', 'Y'),
-('patriciaruiz@example.net', '(7LVrk@k!l', 'Y'),
-('johnsonpeter@example.com', '3mNJsJjo@8', 'Y'),
-('doughertykristen@example.org', 'b^*9#Nr$#%', 'N');
+('rgordon@gmail.com', '&58r8#Fc_x', 0),
+('rjacob@hotmail.com', 'CXVhd9Xb^s', 0),
+('mnewton@gmail.com', 'S*P0U%mt^8', 1),
+('dvincent@hotmail.com', ')WjUo$jb83', 1),
+('bjones@hotmail.com', 'p)e^Z0Hxi1', 1),
+('valerie93@gmail.com', '5(0jXb6TDr', 0),
+('leejohn@gmail.com', '2$T(RizJ+N', 1),
+('don13@gmail.com', '(doFc)zr9a', 0),
+('landerson@gmail.com', '+3VU*foydA', 0),
+('jjones@hotmail.com', '25HPAhYj#5', 0),
+('kking@gmail.com', 'F#rf5HHK!r', 1),
+('fyoung@hotmail.com', 'su)MIOWH@9', 0),
+('yolanda06@gmail.com', '&%9v)QeMg1', 0),
+('lisa10@hotmail.com', '%b5H3qY2B*', 1),
+('daniel69@gmail.com', '&9KGqhbk4X', 1),
+('nfloyd@gmail.com', '!^2FsYAe(o', 1),
+('peter01@gmail.com', '!RhXdPz*5%', 1),
+('ncline@hotmail.com', 'tn3HTHjRq*', 1),
+('gjones@gmail.com', '$uz8cOBgD$', 1),
+('lrhonda@hotmail.com', '8%k36Wbyf8', 0),
+('jcombs@hotmail.com', '1_HiFG+x^w', 0),
+('snewton@gmail.com', '!h!iN!QZ$2', 1),
+('mfrazier@gmail.com', '*45KjyYz@W', 1),
+('manuel@hotmail.com', '(^8rO5i(tF', 0),
+('bcampbell@gmail.com', 'iP9JI7xVL&', 0),
+('uwilliams@hotmail.com', 'a@g6D6_Orl', 1),
+('sbutler@hotmail.com', '+A0Y7UrQj&', 1),
+('patricia@gmail.com', '(7LVrk@k!l', 1),
+('johnpeter@hotmail.com', '3mNJsJjo@8', 1),
+('dkristen@hotmail.com', 'b^*9#Nr$#%', 0);
 
 -- Create Ticket Table
 DROP TABLE IF EXISTS Ticket;
@@ -245,13 +229,12 @@ INSERT INTO Ticket (TicketID, Name, Email, FlightID, PaymentID, SeatID) VALUES
 
 
 
-ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
-flush privileges;
+-- ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
+-- flush privileges;
 
 -- Insert the sum of other two price columns
 /*SELECT Flight.Price + Seat.Price
 FROM Flight
 JOIN Seat ON Flight.FlightID = Seat.FlightID;*/
 
--- ('o5pllb', 'Brandon Campbell', 'campbellbrandon@example.net', 23, '0d4aa4', '146db653-b'),
 

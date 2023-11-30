@@ -17,3 +17,8 @@
   .day-box .day-name {
     font-weight: bold;
   }
+
+  .selected-flight {
+    font-weight: bold;
+    color: red;
+  }

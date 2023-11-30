@@ -108,6 +108,10 @@ app.get('/api/flights/destinations/:origin', (req, res) => {
   });
 });
 
+// seatRoutes
+const seatRoutes = require('./routes/seatRoute');
+app.use('/api', seatRoutes);
+
 
 
 /* app.delete('/cancel-flight',(req, res)=> {

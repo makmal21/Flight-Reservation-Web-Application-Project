@@ -11,10 +11,12 @@ import moment from 'moment'; //new library for formating date
 function Flights() {
 
     const[flights, setFlights] = useState([]);
+
     const navigate = useNavigate();
     const location = useLocation();
     const { from, to } = location.state || {}; // Make sure 'guests' is destructured here
-  
+    const [selectedFlight, setSelectedFlight] = useState(null);
+
     useEffect(() => {
       axios.post('http://localhost:8081/Flights', {from, to })
       .then(res => {
@@ -24,11 +26,16 @@ function Flights() {
 
   }, [from, to]);
 
+    // navigates to the seat-select page with the FlightID
     const handleSeatSelectClick = () => {
-        navigate('/seat-select');
+    if (selectedFlight) {
+      navigate('/seat-select', { state: { flightId: selectedFlight } });
+      } else {
+      alert("Please select a flight first.");
+      }
     };
 
-
+    
 
     return (
       <div>
@@ -50,7 +57,10 @@ function Flights() {
                    <tbody>
                     {
                         flights.map((data,i)=> (
-                            <tr key= {i}> 
+                          <tr key={i} 
+                          onClick={() => setSelectedFlight(data.FlightID)} 
+                          className={selectedFlight === data.FlightID ? 'selected-flight' : ''}
+                          style={{ cursor: 'pointer' }}> 
                                 <td>{data.FlightID} </td>
                                 {/*<td>{data.Origin} </td>
                                 <td>{data.Destination} </td>*/}
@@ -63,7 +73,7 @@ function Flights() {
                    </tbody> 
                 </table>
           </div>
-        <button onClick={handleSeatSelectClick}>Proceed to Seat Selection</button> 
+          <button onClick={handleSeatSelectClick} disabled={!selectedFlight}>Proceed to Seat Selection</button> 
       </div>
     );
   }

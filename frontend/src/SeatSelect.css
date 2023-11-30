@@ -28,7 +28,8 @@
   }
 
   .seat.selected {
-    background-color: green; /* or any indication for selected seats */
+    font-weight: bold;
+    background-color: green;
   }
 
   .seat.unavailable {

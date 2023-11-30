@@ -26,6 +26,16 @@
     justify-content: center; /* Center horizontally */
     font-size: 0.75em; /* Adjust font size as needed */
   }
+
+  .seat.selected {
+    background-color: green; /* or any indication for selected seats */
+  }
+
+  .seat.unavailable {
+    background-color: red;
+    pointer-events: none; /* Prevents clicking on unavailable seats */
+  }
+  
   
   .aisle {
     width: 25px; /* Width of the aisle */

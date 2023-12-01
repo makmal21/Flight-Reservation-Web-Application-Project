@@ -1,14 +1,25 @@
 /* SeatSelect.css */
-.seat-selection-container {
+
+/* .seat-selection-container {
     display: flex;
     justify-content: center;
     align-items: center;
+  } */
+  
+  .seat-selection-container {
+    position: relative; /* Ensure positioning context for absolute children */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px; /* Add more space at the top for labels */
+    height: 300px; /* Example height - adjust as needed */
   }
+  
   
   .seat-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Creates 3 columns */
-    grid-template-rows: repeat(12, 1fr); /* Creates 20 rows */
+    grid-template-columns: repeat(2, 1fr); /* Creates 4 columns */
+    grid-template-rows: repeat(12, 1fr); /* Creates 12 rows */
     gap: 5px; /* Adjust gap as needed */
   }
   
@@ -25,6 +36,8 @@
     align-items: center; /* Center vertically */
     justify-content: center; /* Center horizontally */
     font-size: 0.75em; /* Adjust font size as needed */
+    position: relative; /* Position relative to allow absolute positioning of the pseudo-element */
+
   }
 
   .seat.selected {
@@ -43,3 +56,73 @@
     /* height: 10%;  */
   }
   
+  .seat:nth-of-type(4)::after,
+  .seat:nth-of-type(10)::after {
+    content: "";
+    position: absolute;
+    left: -130%; /* Extend to the left */
+    right: -440%; /* Extend to the right */
+    top: 110%;
+    height: 2.5px; /* Height of the line */
+    background-color: #5f4646; /* Color of the line */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Soft shadow */
+    z-index: 1; /* Ensure the line is above the seats if needed */
+  }
+
+
+.seat-separator {
+  grid-column: 1 / -1; /* This makes the separator stretch across all columns */
+  height: 2px; /* Height of the separator line */
+  background-color: #000; /* Color of the separator line */
+  margin: 5px 0; /* Spacing above and below the line */
+}
+
+.section-label {
+  position: absolute; /* Absolute position for individual labels */
+  font-size: 1em;
+  font-weight: bold;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 2px 8px;
+  border-radius: 5px;
+}
+
+.section-label {
+  position: absolute; /* Absolute position for individual labels */
+  font-size: 1em;
+  font-weight: bold;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 2px 8px;
+  border-radius: 5px;
+  transform: translateX(-50%); /* Centers the label */
+}
+
+
+.business, .comfort, .economy {
+  position: absolute; 
+  font-size: 1em;
+  font-weight: bold;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 2px 8px;
+  border-radius: 5px;
+  transform: translateX(-50%); /* Centers the label horizontally */
+}
+
+.business {
+  top: -10%; /* Adjust percentage as needed */
+  left: 58.5%; /* Center horizontally */
+}
+
+.comfort {
+  top: 10%; /* Adjust percentage as needed */
+  left: 58.6%; /* Center horizontally */
+}
+
+.economy {
+  top: 40%; /* Adjust percentage as needed */
+  left: 58.4%; /* Center horizontally */
+}
+
+

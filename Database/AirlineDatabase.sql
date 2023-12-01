@@ -71,6 +71,7 @@ CREATE TABLE Seat (
   SeatNo VARCHAR(20) COMMENT 'Seat number in flight',
   Type VARCHAR(20) COMMENT 'Ordinary, Comfort, Business Class ',
   Status VARCHAR(20) COMMENT 'Available, Unavailable',
+  FlightID INTEGER,
   Price DECIMAL(10, 2) GENERATED ALWAYS AS (
     CASE
       WHEN Type = 'Ordinary' THEN 30
@@ -79,16 +80,17 @@ CREATE TABLE Seat (
       ELSE NULL
     END
   ) STORED,
-  PRIMARY KEY (SeatID)
+  PRIMARY KEY (SeatID), 
+  FOREIGN KEY (FlightID) REFERENCES Flight(FlightID)
 );
 
 -- eveything is avliable - NEED TO CHANGE THE seatID in ticket table to unavailable!
-INSERT INTO Seat (SeatID, SeatNo, Type, Status) VALUES
-('1AAA', '1', 'Business Class', 'Available'),
-('1AAB', '2', 'Business Class', 'Available'),
-('1AAC', '3', 'Business Class', 'Available'),
-('1AAD', '4', 'Business Class', 'Available'),
-('1AAE', '5', 'Comfort', 'Available'),
+INSERT INTO Seat (SeatID, SeatNo, Type, Status, FlightID) VALUES
+('1AAA', '1', 'Business Class', 'Unavailable',1),
+('1AAB', '2', 'Business Class', 'Unavailable',1),
+('1AAC', '3', 'Business Class', 'Unavailable', 1),
+('1AAD', '4', 'Business Class', 'Unavailable', 1);
+/*('1AAE', '5', 'Comfort', 'Available'),
 ('1AAF', '6', 'Comfort', 'Available'),
 ('1AAG', '7', 'Comfort', 'Available'),
 ('1AAH', '8', 'Comfort', 'Available'),
@@ -123,9 +125,9 @@ INSERT INTO Seat (SeatID, SeatNo, Type, Status) VALUES
 ('2AAK', '37', 'Ordinary', 'Available'),
 ('2AAL', '38', 'Ordinary', 'Available'),
 ('2AAM', '39', 'Ordinary', 'Available'),
-('2AAN', '40', 'Ordinary', 'Available');
+('2AAN', '40', 'Ordinary', 'Available');*/
 
--- FlightSeat Table 
+/*-- FlightSeat Table 
 DROP TABLE IF EXISTS Flight_Seat;
 CREATE TABLE FLight_Seat (
   SeatID VARCHAR(20) NOT NULL,
@@ -138,7 +140,7 @@ CREATE TABLE FLight_Seat (
 -- Cartesian Product to get all combinations   
 INSERT INTO Flight_Seat (SeatID, FlightID)
 SELECT Seat.SeatID, Flight.FlightID
-FROM Seat, Flight;
+FROM Seat, Flight; */
 
 -- Create Payment Table
 DROP TABLE IF EXISTS Payment;
@@ -236,7 +238,7 @@ CREATE TABLE Ticket (
   FOREIGN KEY (SeatID) REFERENCES SEAT(SeatID)
 );
 
-INSERT INTO Ticket (TicketID, Name, Email, FlightID, PaymentID, SeatID) VALUES
+/*INSERT INTO Ticket (TicketID, Name, Email, FlightID, PaymentID, SeatID) VALUES
 ('o5pllb', 'Brandon Campbell', 'campbellbrandon@example.net', 23, '0d4aa4', '1AAA'),
 ('6wftsi', 'Jennifer Combs', 'combsjennifer@example.org', 24, 'ed9b4f', '1AAG'),
 ('2aobyz', 'Donald Trump', 'donald13@example.com', 27, '148482', '1AAJ'),
@@ -249,7 +251,7 @@ INSERT INTO Ticket (TicketID, Name, Email, FlightID, PaymentID, SeatID) VALUES
 ('2ibrzw', 'Ryan Gordon', 'rgordon@example.net', 2, 'cfe942', '1AAS'),
 ('qtq1da', 'Ronald Jacobson', 'rjacobson@example.com', 3, 'dd6c37', '2AAD'),
 ('rpia6h', 'Valerie Fan', 'valerie93@example.com', 29, '38408f', '2AAE'),
-('ywr2sz', 'Yoland Deez', 'yolanda06@example.com', 7, '953efd', '1AAU');
+('ywr2sz', 'Yoland Deez', 'yolanda06@example.com', 7, '953efd', '1AAU');*/
 
 -- SYSTEM ADMIN ACCESS TABLES 
 

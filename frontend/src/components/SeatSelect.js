@@ -60,6 +60,13 @@ function SeatSelect() {
       <h1>Seat Selection for Flight {flightId}</h1>
       <p>Choose your seat:</p>
       <div className="seat-selection-container">
+
+        <div className="section-labels">
+          <span className="section-label economy">Ordinary</span>
+          <span className="section-label comfort">Comfort</span>
+          <span className="section-label business">Business</span>
+        </div>
+
         {createSeatGrid(1, 20)}
         <div className="aisle"></div>
         {createSeatGrid(21, 40)}

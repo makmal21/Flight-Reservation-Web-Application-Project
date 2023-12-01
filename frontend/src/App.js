@@ -13,10 +13,13 @@ import Login from './components/Login';
 import BrowsePassengerList from './components/BrowsePassengerList'; 
 import CancelFlight from './components/CancelFlight'; 
 import SystemAdminView from './components/SystemAdminView'; 
-import Update from './components/Update'; 
-import Add from './components/Add.js'; 
-
-
+import Aircraft from './components/Aircraft'; 
+import Crew from './components/Crew'; 
+import AddCrew from './components/AddCrew.js'; 
+import AddAircraft from './components/AddAircraft.js'; 
+import AdminFlight from './components/AdminFlight.js';
+import AddFlight from './components/AddFlight.js';
+import UpdateFlight from './components/UpdateFlight.js'; 
 
 function App() {
   return (
@@ -33,8 +36,13 @@ function App() {
           <Route path="/browse-passenger-list" element={<BrowsePassengerList />} />
           <Route path="/cancel-flight" element={<CancelFlight />} />
           <Route path="/system-admin-view" element={<SystemAdminView />} />
-          <Route path="/update/:id" element={<Update />} />
-          <Route path="/system-admin-view/add" element={<Add />} />
+          <Route path="/system-admin-view/aircraft" element={<Aircraft />} />
+          <Route path="/system-admin-view/crew" element={<Crew />} />
+          <Route path="/system-admin-view/adminFlight" element={<AdminFlight />} />
+          <Route path="/system-admin-view/crew/add" element={<AddCrew />} />
+          <Route path="/system-admin-view/aircraft/add" element={<AddAircraft />} />
+          <Route path="/system-admin-view/adminFlight/add" element={<AddFlight />} />
+          <Route path="/update/:id" element={<UpdateFlight />} />
           {/* Add more routes as necessary */}
         </Routes>
       </div>

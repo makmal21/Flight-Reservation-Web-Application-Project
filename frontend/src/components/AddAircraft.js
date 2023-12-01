@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-function Add (){
-    const [crewID, setCrewID] = useState('')
-    const [name, setName] = useState('')
-    const [role, setRole] = useState('')
+function AddAircraft (){
+    const [aircraftID, setAircraftID] = useState('')
+    const [model, setModel] = useState('')
+    const [capacity, setCapacity] = useState('')
     const [flightID, setFlightID] = useState('')
     const navigate = useNavigate();
 
@@ -13,10 +13,10 @@ function Add (){
     function handleSubmit(event){
         event.preventDefault();
         
-        axios.post('http://localhost:8081/system-admin-view/add', {crewID, name, role, flightID})
+        axios.post('http://localhost:8081/system-admin-view/aircraft/add', {aircraftID, model, capacity, flightID})
         .then(res => {
             console.log(res);
-            navigate('/system-admin-view'); 
+            navigate('/system-admin-view/aircraft'); 
         }).catch(err => console.log(err));
     }
 
@@ -24,21 +24,21 @@ function Add (){
         <div className= 'd-flex vh-100 justify-content-center align-items-center'>
         <div className='w-50 bg-white rounded p-3' >
             <form onSubmit={handleSubmit}>
-                <h2>Add Crew</h2>
+                <h2>Add Aircraft</h2>
                 <div className= 'mb-2'>
-                    <label htmlFor="" >CrewID</label>
-                    <input type="text" placeholder= 'Enter CrewID' className= 'form-control' 
-                    onChange={e => setCrewID(e.target.value)}/>
+                    <label htmlFor="" >AircraftID</label>
+                    <input type="text" placeholder= 'Enter AircraftID' className= 'form-control' 
+                    onChange={e => setAircraftID(e.target.value)}/>
                 </div>
                 <div className= 'mb-2'>
-                    <label htmlFor="" >Name</label>
-                    <input type="text" placeholder= 'Enter Name' className= 'form-control' 
-                    onChange={e => setName(e.target.value)}/>
+                    <label htmlFor="" >Model</label>
+                    <input type="text" placeholder= 'Enter Model' className= 'form-control' 
+                    onChange={e => setModel(e.target.value)}/>
                 </div>
                 <div className ='mb-2'>
-                    <label htmlFor="">Role</label>
-                    <input type="text" placeholder='Enter Role' className='form-control'
-                    onChange={e => setRole(e.target.value)}/>
+                    <label htmlFor="">Capacity</label>
+                    <input type="text" placeholder='Enter Capacity' className='form-control'
+                    onChange={e => setCapacity(e.target.value)}/>
                 </div>
                 <div className ='mb-2'>
                     <label htmlFor="">FlightID</label>
@@ -52,4 +52,4 @@ function Add (){
     )
 }
 
-export default Add
+export default AddAircraft

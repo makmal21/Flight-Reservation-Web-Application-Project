@@ -114,7 +114,7 @@ app.use('/api', seatRoutes);
 /*SYSTEM ADMIN SQL QUERIES */
 
 //Fetch data from sql, get query for Crew table 
-app.get("/system-admin-view", (req, res) => {
+app.get("/system-admin-view/crew", (req, res) => {
   const sql = "SELECT * FROM Crew";
   db.query(sql, (err, data) => {
       if(err) return res.json("Error");
@@ -123,7 +123,7 @@ app.get("/system-admin-view", (req, res) => {
 });
 
 //add into crew table
-app.post('/system-admin-view/add', (req, res) => {
+app.post('/system-admin-view/crew/add', (req, res) => {
   const sql = "INSERT INTO Crew (`CrewID`, `Name`, `Role`, `FlightID`) VALUES (?, ?, ?, ?)";
   const values = [
       req.body.crewID,
@@ -153,8 +153,46 @@ app.put('/update/:id', (req, res) => {
 })
 
 //Delete data that matches ID
-app.delete('/system-admin-view/:id', (req, res) => {
+app.delete('/system-admin-view/crew:id', (req, res) => {
   const sql = "DELETE FROM Crew WHERE CrewID = ?";
+  const id = req.params.id
+
+  db.query(sql, [id], (err, data) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ error: "Internal Server Error" });
+      }
+      return res.json(data);
+  })
+})
+
+//Fetch data from sql, get query for Aircraft table 
+app.get("/system-admin-view/aircraft", (req, res) => {
+  const sql = "SELECT * FROM Aircraft";
+  db.query(sql, (err, data) => {
+      if(err) return res.json("Error");
+      return res.json(data);
+  })
+});
+
+//add into Aircraft table
+app.post('/system-admin-view/aircraft/add', (req, res) => {
+  const sql = "INSERT INTO Aircraft (`AircraftID`, `Model`, `Capacity`, `FlightID`) VALUES (?, ?, ?, ?)";
+  const values = [
+      req.body.aircraftID,
+      req.body.model, 
+      req.body.capacity, 
+      req.body.flightID
+  ] 
+  db.query(sql, values, (err, data) => {
+      if (err) return res.status(500).json({ error: err.message });
+      return res.json(data);
+  })
+})
+
+//Delete data that matches AircraftID 
+app.delete('/system-admin-view/aircraft:id', (req, res) => {
+  const sql = "DELETE FROM Aircraft WHERE AircraftID = ?";
   const id = req.params.id
 
   db.query(sql, [id], (err, data) => {

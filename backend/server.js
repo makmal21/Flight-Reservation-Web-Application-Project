@@ -137,22 +137,9 @@ app.post('/system-admin-view/crew/add', (req, res) => {
   })
 })
 
-//Put data entered into Crew relation table 
-app.put('/update/:id', (req, res) => {
-  const sql = "UPDATE Crew set `Name` = ?, `Role` = ?, `FlightID` =?  where ID = ?";
-  const values = [
-      req.body.name, 
-      req.body.role,
-      req.body.flightID
-  ]  
-  const id = req.params.id
-  db.query(sql, [...values, id], (err, data) => {
-      if (err) return res.json("Error");
-      return res.json(data);
-  })
-})
 
-//Delete data that matches ID
+
+//Delete data that matches CrewID
 app.delete('/system-admin-view/crew:id', (req, res) => {
   const sql = "DELETE FROM Crew WHERE CrewID = ?";
   const id = req.params.id
@@ -186,6 +173,77 @@ app.post('/system-admin-view/aircraft/add', (req, res) => {
   ] 
   db.query(sql, values, (err, data) => {
       if (err) return res.status(500).json({ error: err.message });
+      return res.json(data);
+  })
+})
+
+//Delete data that matches AircraftID 
+app.delete('/system-admin-view/aircraft:id', (req, res) => {
+  const sql = "DELETE FROM Aircraft WHERE AircraftID = ?";
+  const id = req.params.id
+
+  db.query(sql, [id], (err, data) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ error: "Internal Server Error" });
+      }
+    }
+  )
+}
+);
+
+//Fetch data from sql, get query for Flight table 
+app.get("/system-admin-view/adminFlight", (req, res) => {
+  const sql = "SELECT * FROM Flight";
+  db.query(sql, (err, data) => {
+      if(err) return res.json("Error");
+      return res.json(data);
+  })
+});
+
+//add into Flight table
+app.post('/system-admin-view/adminFlight/add', (req, res) => {
+  const sql = "INSERT INTO Flight (`FlightID`, `Origin`, `Destination`, `DepartureDate`, `Price`) VALUES (?, ?, ?, ?, ?)";
+  const values = [
+      req.body.flightID,
+      req.body.origin, 
+      req.body.destination, 
+      req.body.departureDate, 
+      req.body.Price 
+  ] 
+  db.query(sql, values, (err, data) => {
+      if (err) return res.status(500).json({ error: err.message });
+      return res.json(data);
+  })
+})
+
+//Remove data that matches FlightID in database
+app.delete('/system-admin-view/adminFlight:id', (req, res) => {
+  const sql = "DELETE FROM Flight WHERE FlightID = ?";
+  const id = req.params.id
+
+  db.query(sql, [id], (err, data) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ error: "Internal Server Error" });
+      }
+    }
+  )
+}
+);
+
+//Update data in database modified by system admin 
+app.put('/system-admin-view/adminFlight/update/:id', (req, res) => {
+  const sql = "UPDATE Flight set `Origin` = ?, `Destination` =?, `DepartureDate` =?, `Price` =?  where FlightID = ?";
+  const values = [
+      req.body.origin, 
+      req.body.destination,
+      req.body.departureDate, 
+      req.body.price
+  ]  
+  const id = req.params.id
+  db.query(sql, [...values, id], (err, data) => {
+      if (err) return res.json("Error");
       return res.json(data);
   })
 })
@@ -267,20 +325,7 @@ app.listen(port, () => {
 });
 
 
-//Delete data that matches AircraftID 
-app.delete('/system-admin-view/aircraft:id', (req, res) => {
-  const sql = "DELETE FROM Aircraft WHERE AircraftID = ?";
-  const id = req.params.id
 
-  db.query(sql, [id], (err, data) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).json({ error: "Internal Server Error" });
-      }
-    }
-  )
-}
-);
 
 
 

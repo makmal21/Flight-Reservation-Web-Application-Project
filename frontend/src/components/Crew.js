@@ -46,6 +46,7 @@ function Crew() {
                       <th>Name</th>
                       <th>Role</th>
                       <th>FlightID</th>
+                      <th>Action</th>
                       </tr>                    
                     </thead>
                     <tbody>

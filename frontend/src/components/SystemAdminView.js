@@ -11,7 +11,7 @@ function SystemAdminView() {
         <div>
           <Link to ='/system-admin-view/aircraft'className='btn btn-success'>View Aircraft Information</Link>
           <Link to ='/system-admin-view/crew'className='btn btn-success'>View Crew Information</Link>
-          <Link to ='/system-admin-view/flight'className='btn btn-success'>View Flight Information</Link>
+          <Link to ='/system-admin-view/adminflight'className='btn btn-success'>View Flight Information</Link>
         </div>
     </div>
   );

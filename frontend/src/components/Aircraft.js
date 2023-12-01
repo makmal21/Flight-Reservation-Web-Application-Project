@@ -1,10 +1,11 @@
 // Aircraft.js
 
-
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import { Link } from 'react-router-dom'
 import '../Admin.css';
+
+// delete and add working --> weird that window reload is not working ?
 
 function Aircraft() {
 
@@ -31,7 +32,6 @@ function Aircraft() {
           console.log(err);
         }
       } 
-  
   }
     return (
       <div>
@@ -46,6 +46,7 @@ function Aircraft() {
                         <th>Model</th>
                         <th>Capacity</th>
                         <th>FlightID</th>
+                        <th>Action</th>
                         </tr>                    
                       </thead>
                       <tbody>

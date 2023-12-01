@@ -42,7 +42,7 @@ function App() {
           <Route path="/system-admin-view/crew/add" element={<AddCrew />} />
           <Route path="/system-admin-view/aircraft/add" element={<AddAircraft />} />
           <Route path="/system-admin-view/adminFlight/add" element={<AddFlight />} />
-          <Route path="/update/:id" element={<UpdateFlight />} />
+          <Route path="/system-admin-view/adminFlight/update/:id" element={<UpdateFlight />} />
           {/* Add more routes as necessary */}
         </Routes>
       </div>

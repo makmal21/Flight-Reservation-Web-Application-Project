@@ -37,7 +37,7 @@ function AddAircraft (){
                 </div>
                 <div className ='mb-2'>
                     <label htmlFor="">Capacity</label>
-                    <input type="text" placeholder='Enter Capacity' className='form-control'
+                    <input type="number" placeholder='Enter Capacity' className='form-control'
                     onChange={e => setCapacity(e.target.value)}/>
                 </div>
                 <div className ='mb-2'>

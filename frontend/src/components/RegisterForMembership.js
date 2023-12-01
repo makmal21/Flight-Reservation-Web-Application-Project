@@ -1,7 +1,9 @@
 // RegisterForMembership.js
 import React from 'react';
-// import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom'; 
 import { useState } from 'react'; // Import useState
+import Validation from './LoginValidation.js';
+import axios from 'axios';
 
 function RegisterForMembership() {
     // const navigate = useNavigate();
@@ -13,18 +15,26 @@ function RegisterForMembership() {
         password: ''
     });
     
+    const navigate = useNavigate();
+    const [errors, setErrors] = useState("");
+
     const handleInputChange = (event) => {
-        const { name, value } = event.target;
-        setRegistrationData(prevData => ({
-          ...prevData,
-          [name]: value
-        }));
+        setRegistrationData(prevData => ({...prevData,[event.target.name]: event.target.value}));
     };
     
     const handleSubmit = (event) => {
         event.preventDefault();
         // Handle the registration logic here. Send data to server, etc.
-        console.log(registrationData); // For now, just log the data to the console
+        setErrors(Validation(registrationData))
+        console.log(registrationData)
+        if(errors.firstName === "" && errors.lastName === "" && errors.email === "" && errors.password === ""){
+            console.log(registrationData)
+            axios.post('http://localhost:8081/register', registrationData)
+            .then(res => {
+                navigate('/');
+            })
+            .catch(err => console.log(err));
+        }
     };    
 
 return (
@@ -35,7 +45,7 @@ return (
             <h2>Become a member today!</h2>
             <p style={{ textAlign: 'left' }}><b>Perks include:</b><br/ >
             <br />
-            • Eligibility to apply for the company’s credit card<br />
+            • Eligibility to apply for the company's credit card<br />
             • Monthly promotion news<br />  
             • Discount prices at airport lounges<br />
             • One free companion ticket once a year</p>      
@@ -50,6 +60,7 @@ return (
                     onChange={handleInputChange} 
                     value={registrationData.firstName} 
                 />
+                {errors.firstName && <span className='text-danger'> {errors.firstName}</span>}
 
                 <label htmlFor="lastName">Last Name</label>
                 <input 
@@ -59,6 +70,7 @@ return (
                     onChange={handleInputChange} 
                     value={registrationData.lastName} 
                 />
+                {errors.lastName && <span className='text-danger'> {errors.lastName}</span>}
 
                 <label htmlFor="email">Email Address</label>
                 <input 
@@ -68,6 +80,7 @@ return (
                     onChange={handleInputChange} 
                     value={registrationData.email}
                 />
+                {errors.email && <span className='text-danger'> {errors.email}</span>}
 
                 <label htmlFor="password">Password</label>
                 <input 
@@ -77,6 +90,7 @@ return (
                     onChange={handleInputChange} 
                     value={registrationData.password}
                 />
+                {errors.password && <span className='text-danger'> {errors.password}</span>}
 
                 <button type="submit">Apply for Membership</button>
             </form>

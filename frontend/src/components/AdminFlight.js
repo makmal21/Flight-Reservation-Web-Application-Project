@@ -11,12 +11,12 @@ import '../Admin.css';
 function AdminFlight() {
 
   //Array to store data retrieved from  database
-  const[crew,setCrew] = useState([])
+  const[flight,setFlight] = useState([])
 
   //Retrieve Crew Table from Database 
   useEffect(()=>{
-    axios.get('http://localhost:8081/system-admin-view/crew')
-    .then(res=> setCrew(res.data))
+    axios.get('http://localhost:8081/system-admin-view/flight')
+    .then(res=> setFlight(res.data))
     .catch(err => console.log(err));
   },[])
 
@@ -24,10 +24,10 @@ function AdminFlight() {
   //Send request to remove crew 
   const handleDelete = async (id) => {
     console.log(id)
-    if(window.confirm('Are you sure you want to remove this '+id+'?'))
+    if(window.confirm('Are you sure you want to remove this flight '+id+'?'))
     {
       try{
-        await axios.delete('http://localhost:8081/system-admin-view/crew'+id)
+        await axios.delete('http://localhost:8081/system-admin-view/adminFlight'+id)
         window.location.reload()
       }catch(err){
         console.log(err);
@@ -37,10 +37,10 @@ function AdminFlight() {
 }
   return (
     <div>
-        <h2>Crew Information</h2>
+        <h2>Flight Information</h2>
         <div className= 'd-flex justify-content-center align-items-center'>
           <div className="table-container">
-          <Link to="/system-admin-view/crew/add" className='btn btn-success'>Add Crew +</Link>
+          <Link to="/system-admin-view/adminFlight/add" className='btn btn-success'>Add Crew +</Link>
             <table className='scrollable-table w-100 bg-white rounded p-3'>
                     <thead>
                       <tr>
@@ -52,7 +52,7 @@ function AdminFlight() {
                     </thead>
                     <tbody>
                       {
-                          crew.map((data,i)=> (
+                          flight.map((data,i)=> (
                               <tr key= {i}> 
                                   <td>{data.CrewID} </td>
                                   <td>{data.Name} </td>

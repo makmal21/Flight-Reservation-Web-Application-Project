@@ -166,6 +166,75 @@ app.delete('/system-admin-view/:id', (req, res) => {
   })
 })
 
+// Login
+app.post('/login', (req,res) => {
+  const sql = "SELECT * FROM User WHERE Email = ? AND Password = ?";
+  db.query(sql, [req.body.email,req.body.password], (err,data) => {
+      if(err){
+          return res.json("Error");
+      }
+      if(data.length > 0){
+          return res.json({status:"Success", data: data});
+      } else{
+          return res.json({status:"Failed", data: data});
+      }
+  })
+})
+
+// Register
+app.post('/register', (req,res) => {
+  const sql = "INSERT INTO user (email, password, StaffFlag) VALUES (?, ?, ?)";
+  const values = [
+      req.body.email,
+      req.body.password,
+      'N'
+  ]
+  db.query(sql, values, (err,data) => {
+      if(err){
+          return res.json("Error");
+      }
+      return res.json(data);
+  })
+})
+
+// Payment
+app.post('/pay', (req,res) => {
+  const paymentID = generateUniqueID();
+  const sql = "SELECT * FROM payment WHERE paymentID = ?";
+  db.query(sql, paymentID, (err,data) => {
+      if(err){
+          sql = "INSERT INTO payment"
+      }
+      return res.json(data);
+  })
+})
+
+// Get price
+app.post('/price', (req, res) => {
+  const sql = "SELECT seat.Price AS seatPrice, flight.Price AS flightPrice FROM flight_seat JOIN seat ON flight_seat.SeatID = seat.SeatID JOIN flight ON flight_seat.FlightID = flight.FlightID WHERE seat.SeatID = ?";
+  const seat = req.body.selectedSeat;
+  console.log(seat)
+  db.query(sql, [seat], (err, data) => {
+    if (err) return res.status(500).json({ error: err.message });
+    console.log(data)
+    return res.json(data)
+  })
+})
+
+
+// UniqueID for payment
+const generateUniqueID = () => {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let uniqueID = '';
+
+  for (let i = 0; i < 6; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    uniqueID += characters.charAt(randomIndex);
+  }
+
+  return uniqueID;
+};
+
 // Start the server
 const port = 8081;
 app.listen(port, () => {

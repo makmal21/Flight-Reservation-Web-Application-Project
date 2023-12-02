@@ -1,8 +1,10 @@
+//AddCrew.js
+
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-function Add (){
+function AddCrew (){
     const [crewID, setCrewID] = useState('')
     const [name, setName] = useState('')
     const [role, setRole] = useState('')
@@ -13,10 +15,10 @@ function Add (){
     function handleSubmit(event){
         event.preventDefault();
         
-        axios.post('http://localhost:8081/system-admin-view/add', {crewID, name, role, flightID})
+        axios.post('http://localhost:8081/system-admin-view/crew/add', {crewID, name, role, flightID})
         .then(res => {
             console.log(res);
-            navigate('/system-admin-view'); 
+            navigate('/system-admin-view/crew'); 
         }).catch(err => console.log(err));
     }
 
@@ -52,4 +54,4 @@ function Add (){
     )
 }
 
-export default Add
+export default AddCrew

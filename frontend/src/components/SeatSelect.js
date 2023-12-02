@@ -26,17 +26,44 @@ function SeatSelect() {
     }
   }, [flightId]);
 
-  const handleSeatClick = (seatNo) => {
-    const seat = seatStatuses.find(s => parseInt(s.SeatNo) === seatNo);
-    if (seat) {
-      setSelectedSeat(seat);  // Store the entire seat object
+  // UniqueID for seatID
+  const generateUniqueID = () => {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let uniqueID = '';
+
+    for (let i = 0; i < 4; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      uniqueID += characters.charAt(randomIndex);
     }
+
+    return uniqueID;
+  };
+
+  const determineSeatType = (seatNo) => {
+    // logic for seat type
+    if ((seatNo >= 1 && seatNo <= 4 ) || (seatNo >= 21 && seatNo <= 24 )) return "Business";
+    if ((seatNo >= 5 && seatNo <= 10 ) || (seatNo >= 25 && seatNo <= 30 )) return "Comfort";
+    return "Ordinary";
+  };
+
+  const handleSeatClick = (seatNo) => {
+
+      const completeSeat = {
+        SeatID: generateUniqueID(),
+        SeatNo: seatNo,
+        Type: determineSeatType(seatNo),
+        Status: "Unavailable",
+        FlightID: flightId
+      };
+      setSelectedSeat(completeSeat);
   };
 
   const handlePaymentClick = () => {
     if (selectedSeat) {
-      navigate('/payment', { state: { selectedSeat: selectedSeat, flightId: flightId } }); //pushes flightID and selectedSeat as object
-    }
+      navigate('/payment', { state: { selectedSeat: selectedSeat} }); //pushes selectedSeat as object
+    } else {
+      alert("Please select a available seat first.");
+      }
   };
 
   console.log(seatStatuses);
@@ -45,7 +72,7 @@ function SeatSelect() {
   const createSeatGrid = (startNum, endNum) => {
     let seats = [];
     for (let i = startNum; i <= endNum; i++) {
-      const isSelected = selectedSeat === i;
+      const isSelected = selectedSeat?.SeatNo === i;
       const isUnavailable = seatStatuses.some(seat => parseInt(seat.SeatNo) === i && seat.Status === 'Unavailable');
   
       seats.push(

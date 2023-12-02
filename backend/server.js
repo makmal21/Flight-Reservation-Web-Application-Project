@@ -1,6 +1,7 @@
 const express = require('express');
 const mysql = require('mysql');
 const cors = require('cors');
+const util = require('util');
 
 const app = express();
 
@@ -15,6 +16,8 @@ const db = mysql.createConnection({
     password:'password',
     database:'AIRLINE',
   });
+
+const query = util.promisify(db.query).bind(db);
 
 db.connect((err) => {
   if (err) {
@@ -290,6 +293,7 @@ app.post('/login', (req,res) => {
   })
 })
 
+//sendRegistrationPromo = require('./sendRegistrationPromo')
 // Register
 app.post('/register', (req,res) => {
   const sql = "INSERT INTO user (email, password, StaffFlag) VALUES (?, ?, ?)";
@@ -302,6 +306,7 @@ app.post('/register', (req,res) => {
       if(err){
           return res.json("Error");
       }
+      //sendRegistrationPromo(re.body.email);
       return res.json(data);
   })
 })
@@ -348,45 +353,45 @@ const generateUniqueID = () => {
 
 const sendTicketReceiptEmail = require('./sendTicketReceiptEmail');
 // Update Ticket and send email
-app.post('/update_ticket', (req, res) => {
-  const { paymentDetails, selectedSeat, price } = req.body;
-  const cardholderName = paymentDetails.cardholderName;
-  const email = paymentDetails.email;
-  const { SeatID, SeatNo, Type, Status, FlightID } = selectedSeat;
-  const paymentID = generateUniqueID();
-  const ticketID = generateUniqueID();
+app.post('/update_ticket', async (req, res) => {
+  try {
+    const { paymentDetails, selectedSeat, price } = req.body;
+    const cardholderName = paymentDetails.cardholderName;
+    const email = paymentDetails.email;
+    const { SeatID, SeatNo, Type, FlightID } = selectedSeat;
+    const paymentID = generateUniqueID();
+    const ticketID = generateUniqueID();
+    //console.log("Queried FlightID:", FlightID);
 
-  console.log(paymentID)
-  console.log(email)
-  console.log(FlightID)
-  console.log(ticketID)
-  console.log(paymentDetails)
-  console.log(selectedSeat)
-  console.log(price)
+    // SQL Queries
+    const seat_sql = "INSERT INTO Seat (SeatID, SeatNo, Type, Status, FlightID) VALUES (?, ?, ?, ?, ?)";
+    const tic_sql = "INSERT INTO Ticket (TicketID, Name, Email, FlightID, PaymentID, SeatID) VALUES (?, ?, ?, ?, ?, ?)";
+    const pay_sql = "INSERT INTO Payment (PaymentID, Amount) VALUES (?, ?)";
+    // const flight_sql = "SELECT * FROM Flight WHERE `FlightID` = ?";
 
-  const seat_sql = "INSERT INTO seat (SeatID, SeatNo, Type, Status, FlightID) VALUES (?, ?, ?, ?, ?)";
-  const tic_sql = "INSERT INTO Ticket (TicketID, Name, Email, FlightID, PaymentID, SeatID) VALUES (?, ?, ?, ?, ?, ?)";
-  const pay_sql = "INSERT INTO payment (PaymentID, Amount) VALUES (?, ?)"
-  const flight_sql = "SELECT * FROM Flight WHERE `FlightID` = ?"
+    // Database operations
+    
+    //const flightData = await db.query(flight_sql, [FlightID]);
+    //const flightDetails = flightData[0]; // Assuming there's only one match
+    //console.log("Flight Details: ", flightDetails);
 
-  db.query(pay_sql, [paymentID, price], (err,data) => {
-    if (err) return res.status(500).json({ error: err.message });
-    db.query(seat_sql, [SeatID, SeatNo, Type, 'Unavailable', FlightID], (err1, data1) => {
-      if (err1) return res.status(500).json({ error: err1.message });
-      db.query(tic_sql, [ticketID, cardholderName, email, FlightID, paymentID, SeatID], (err2, data2) => {
-        if (err2) return res.status(500).json({ error: err2.message });
-        //db.query(flight_sql, [FlightID], (err3, data3) => {
-          //if (err3) return res.status(500).json({ error: err3.message });
-          
-          //const flightDetails = data3[0]; // should only return one entry
-          //console.log(flightDetails)
-          //sendTicketReceiptEmail(email, ticketID, cardholderName, SeatNo, price, flightDetails);
-          return res.json(data3)
-        });
-      });
-    });
-  });
-//});
+    //if(!flightDetails) {
+    //  throw new Error("No flight details found");
+    //}
+
+    await db.query(pay_sql, [paymentID, price]);
+    await db.query(seat_sql, [SeatID, SeatNo, Type, 'Unavailable', FlightID]);
+    await db.query(tic_sql, [ticketID, cardholderName, email, FlightID, paymentID, SeatID]);
+
+    // Sending the ticket receipt email
+    await sendTicketReceiptEmail(email, ticketID, cardholderName, SeatNo, price);//, flightDetails);
+    res.json({ message: "Ticket updated and email sent" });
+
+  } catch (err) {
+    console.error("Error occurred: ", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 
 

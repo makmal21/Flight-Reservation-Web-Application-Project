@@ -65,15 +65,41 @@ app.post('/cancel-flight', (req, res) => {
 });
 
 //Cancel Flight
-app.delete('/cancel-flight/:id',(req, res)=> {
-  const sql ="DELETE FROM Ticket WHERE `TicketID` = ?"
-  const id = req.params.id
+const sendCancellationEmail = require('./sendCancellationEmail'); // Make sure this path is correct
+app.delete('/cancel-flight/:id', (req, res) => {
+  const id = req.params.id;
 
-  db.query(sql, [id], (err, data) =>{
-    if (err) return res.json("Error");
-    return res.json(data);
-  })
-})
+  // First, fetch the ticket details before deletion
+  const sqlFetch = "SELECT * FROM Ticket WHERE `TicketID` = ?";
+  db.query(sqlFetch, [id], (fetchErr, fetchResults) => {
+    if (fetchErr) {
+      return res.status(500).json({ error: "Error fetching ticket details" });
+    }
+
+    // Check if ticket exists
+    if (fetchResults.length === 0) {
+      return res.status(404).json({ error: "Ticket not found" });
+    }
+
+    // Store email and ticketID for the email
+    const ticketEmail = fetchResults[0].Email;
+    const ticketID = fetchResults[0].TicketID;
+
+    // Proceed to delete the ticket
+    const sqlDelete = "DELETE FROM Ticket WHERE `TicketID` = ?";
+    db.query(sqlDelete, [id], (deleteErr, deleteResults) => {
+      if (deleteErr) {
+        return res.status(500).json({ error: "Error deleting ticket" });
+      }
+
+      // Send cancellation email
+      sendCancellationEmail(ticketEmail, ticketID);
+
+      // Respond to the client
+      res.json({ message: "Flight cancelled successfully" });
+    });
+  });
+});
 
 //Get origin options from homepage
 app.get('/api/flights/origin', (req, res) => {
@@ -307,31 +333,6 @@ app.post('/price', (req, res) => {
   })
 })
 
-// Get 
-app.post('/update_ticket', (req, res) => {
-  const { paymentDetails, selectedSeat, price } = req.body;
-  const cardholderName = paymentDetails.cardholderName;
-  const email = paymentDetails.email;
-  const { SeatID, SeatNo, Type, Status, FlightID } = selectedSeat;
-  const paymentID = generateUniqueID();
-  console.log(paymentID)
-  console.log(price)
-  const seat_sql = "INSERT INTO seat (SeatID, SeatNo, Type, Status, FlightID) VALUES (?, ?, ?, ?, ?)";
-  const tic_sql = "INSERT INTO Ticket (TicketID, Name, Email, FlightID, PaymentID, SeatID) VALUES (?, ?, ?, ?, ?, ?)";
-  const pay_sql = "INSERT INTO payment (PaymentID, Amount) VALUES (?, ?)"
-  db.query(pay_sql, [paymentID, price], (err,data) => {
-    if (err) return res.status(500).json({ error: err.message });
-    db.query(seat_sql, [SeatID, SeatNo, Type, 'Unavailable', FlightID], (err1, data1) => {
-      if (err1) return res.status(500).json({ error: err1.message });
-      db.query(tic_sql, [generateUniqueID(), cardholderName, email, FlightID, paymentID, SeatID], (err2, data2) => {
-        if (err2) return res.status(500).json({ error: err2.message });
-        return res.json(data2)
-      })
-    })
-  })
-})
-
-
 // UniqueID for payment
 const generateUniqueID = () => {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -345,17 +346,53 @@ const generateUniqueID = () => {
   return uniqueID;
 };
 
+const sendTicketReceiptEmail = require('./sendTicketReceiptEmail');
+// Update Ticket and send email
+app.post('/update_ticket', (req, res) => {
+  const { paymentDetails, selectedSeat, price } = req.body;
+  const cardholderName = paymentDetails.cardholderName;
+  const email = paymentDetails.email;
+  const { SeatID, SeatNo, Type, Status, FlightID } = selectedSeat;
+  const paymentID = generateUniqueID();
+  const ticketID = generateUniqueID();
+
+  console.log(paymentID)
+  console.log(email)
+  console.log(FlightID)
+  console.log(ticketID)
+  console.log(paymentDetails)
+  console.log(selectedSeat)
+  console.log(price)
+
+  const seat_sql = "INSERT INTO seat (SeatID, SeatNo, Type, Status, FlightID) VALUES (?, ?, ?, ?, ?)";
+  const tic_sql = "INSERT INTO Ticket (TicketID, Name, Email, FlightID, PaymentID, SeatID) VALUES (?, ?, ?, ?, ?, ?)";
+  const pay_sql = "INSERT INTO payment (PaymentID, Amount) VALUES (?, ?)"
+  const flight_sql = "SELECT * FROM Flight WHERE `FlightID` = ?"
+
+  db.query(pay_sql, [paymentID, price], (err,data) => {
+    if (err) return res.status(500).json({ error: err.message });
+    db.query(seat_sql, [SeatID, SeatNo, Type, 'Unavailable', FlightID], (err1, data1) => {
+      if (err1) return res.status(500).json({ error: err1.message });
+      db.query(tic_sql, [ticketID, cardholderName, email, FlightID, paymentID, SeatID], (err2, data2) => {
+        if (err2) return res.status(500).json({ error: err2.message });
+        //db.query(flight_sql, [FlightID], (err3, data3) => {
+          //if (err3) return res.status(500).json({ error: err3.message });
+          
+          //const flightDetails = data3[0]; // should only return one entry
+          //console.log(flightDetails)
+          //sendTicketReceiptEmail(email, ticketID, cardholderName, SeatNo, price, flightDetails);
+          return res.json(data3)
+        });
+      });
+    });
+  });
+//});
+
+
+
+
 // Start the server
 const port = 8081;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
-});
-
-
-
-
-
-
-
-
-
+})

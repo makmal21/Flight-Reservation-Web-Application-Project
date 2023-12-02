@@ -6,6 +6,7 @@ function PaymentValidation(values){
     const currentTime = new Date();
     const currentYear = currentTime.getFullYear();
     const currentMonth = currentTime.getMonth() + 1;
+    const email_pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
     if(values.cardNumber === ""){
         error.cardNumber = "Visa number required"
@@ -40,6 +41,13 @@ function PaymentValidation(values){
         error.expiryYear = ""
     }
 
+    if(values.email === ""){
+        error.email = "Email should not be empty"
+    } else if(!email_pattern.test(values.email)) {
+        error.email = "Invalid email"
+    } else {
+        error.email = ""
+    }
 
     return error
 

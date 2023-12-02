@@ -187,7 +187,7 @@ app.post('/register', (req,res) => {
   const values = [
       req.body.email,
       req.body.password,
-      'N'
+      '0'
   ]
   db.query(sql, values, (err,data) => {
       if(err){
@@ -199,25 +199,52 @@ app.post('/register', (req,res) => {
 
 // Payment
 app.post('/pay', (req,res) => {
+
   const paymentID = generateUniqueID();
-  const sql = "SELECT * FROM payment WHERE paymentID = ?";
-  db.query(sql, paymentID, (err,data) => {
+  const amount = req.body.price;
+  const sql = "INSERT INTO payment (PaymentID, Amount) VALUES (?, ?)";
+  console.log(paymentID)
+  db.query(sql, [paymentID, amount], (err,data) => {
       if(err){
-          sql = "INSERT INTO payment"
+        return res.json(err);
       }
-      return res.json(data);
+      return res.json({data: data, paymentID: paymentID});
   })
 })
 
 // Get price
 app.post('/price', (req, res) => {
-  const sql = "SELECT seat.Price AS seatPrice, flight.Price AS flightPrice FROM flight_seat JOIN seat ON flight_seat.SeatID = seat.SeatID JOIN flight ON flight_seat.FlightID = flight.FlightID WHERE seat.SeatID = ?";
-  const seat = req.body.selectedSeat;
-  console.log(seat)
-  db.query(sql, [seat], (err, data) => {
-    if (err) return res.status(500).json({ error: err.message });
+  const sql = "SELECT flight.Price AS flightPrice FROM flight WHERE flight.FlightID = ?";
+  const fID = req.body.fID;
+  console.log(fID);
+  db.query(sql, fID, (err, data) => {
     console.log(data)
+    if (err) return res.status(500).json({ error: err.message });
     return res.json(data)
+  })
+})
+
+// Get 
+app.post('/update_ticket', (req, res) => {
+  const { paymentDetails, selectedSeat, price } = req.body;
+  const cardholderName = paymentDetails.cardholderName;
+  const email = paymentDetails.email;
+  const { SeatID, SeatNo, Type, Status, FlightID } = selectedSeat;
+  const paymentID = generateUniqueID();
+  console.log(paymentID)
+  console.log(price)
+  const seat_sql = "INSERT INTO seat (SeatID, SeatNo, Type, Status, FlightID) VALUES (?, ?, ?, ?, ?)";
+  const tic_sql = "INSERT INTO Ticket (TicketID, Name, Email, FlightID, PaymentID, SeatID) VALUES (?, ?, ?, ?, ?, ?)";
+  const pay_sql = "INSERT INTO payment (PaymentID, Amount) VALUES (?, ?)"
+  db.query(pay_sql, [paymentID, price], (err,data) => {
+    if (err) return res.status(500).json({ error: err.message });
+    db.query(seat_sql, [SeatID, SeatNo, Type, 'Unavailable', FlightID], (err1, data1) => {
+      if (err1) return res.status(500).json({ error: err1.message });
+      db.query(tic_sql, [generateUniqueID(), cardholderName, email, FlightID, paymentID, SeatID], (err2, data2) => {
+        if (err2) return res.status(500).json({ error: err2.message });
+        return res.json(data2)
+      })
+    })
   })
 })
 

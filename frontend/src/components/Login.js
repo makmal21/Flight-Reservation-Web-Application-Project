@@ -28,7 +28,7 @@ function Login() {
             axios.post('http://localhost:8081/login', values)
             .then(res => {
                 if(res.data.status === 'Success') {
-                    if(res.data.data[0].StaffFlag === 'N'){
+                    if(res.data.data[0].StaffFlag === '0'){
                         navigate('/'); 
                     } else {
                         navigate('/system-admin-view');

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import {useNavigate, useLocation} from 'react-router-dom'
 import Form from 'react-bootstrap/Form';
@@ -14,6 +14,7 @@ function Payment() {
     expiryMonth: '',
     expiryYear: '',
     cvv: '',
+    email: ''
   });
 
   const navigate = useNavigate();
@@ -26,25 +27,44 @@ function Payment() {
     setPaymentDetails({ ...paymentDetails, [name]: value });
   };
 
-  let price = 0.0;
+  const [price, setPrice] = useState(0.0);
+  const [paymentID, setPaymentID] = useState("");
+  let seatPrice = 30;
+
+  useEffect(() => {
+    if (selectedSeat) {
+      const sType = selectedSeat.Type;
+      const fID = selectedSeat.FlightID;
+      console.log(selectedSeat)
+      axios.post('http://localhost:8081/price', {fID})
+        .then(res => {
+          const flightPrice = res.data[0].flightPrice;
+          if (sType === "Comfort") {
+            seatPrice = 42;
+          } else if (sType === "Business Class") {
+            seatPrice = 60;
+          } else {
+            seatPrice = 30;
+          }
+          const totalPrice = flightPrice + seatPrice;
+          setPrice(totalPrice);
+          console.log(totalPrice);
+        })
+        .catch(err => console.log(err));
+    }
+  }, [selectedSeat]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     setErrors(PaymentValidation(paymentDetails))
-    console.log(selectedSeat)
-    if(errors.cardNumber === "" && errors.cardholderName === "" && errors.expiryMonth === "" && errors.expiryYear === "" && errors.cvv === ""){
-      console.log("made it")
-      axios.post('http://localhost:8081/price', {selectedSeat})
+    if(errors.cardNumber === "" && errors.cardholderName === "" && errors.expiryMonth === "" && errors.expiryYear === "" && errors.cvv === "" && errors.email === ""){
+      
+      axios.post('http://localhost:8081/update_ticket', {paymentDetails, selectedSeat, price})
       .then(res => {
-          console.log(res.data.price)
-          price = res.data.price;
+        navigate('/'); 
       })
       .catch(err => console.log(err));
-      axios.post('http://localhost:8081/pay', [paymentDetails,price])
-      .then(res => {
-          
-      })
-      .catch(err => console.log(err));
+      
   }
   };
 
@@ -53,7 +73,7 @@ function Payment() {
       <h2>Payment Details</h2>
       <div className='d-flex justify-content-center align-items-center'>
         <div className='p-3 bg-white w-25'>
-          <p>Total: <b>$INSERT PRICE FROM BACKEND HERE</b></p>
+          <p>Total: <b>${price}</b></p>
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
               <Form.Label>Card Number</Form.Label>
@@ -79,6 +99,19 @@ function Payment() {
                 required
               />
               {errors.cardholderName && <span className='text-danger'> {errors.cardholderName}</span>}
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter Email"
+                name="email"
+                value={paymentDetails.email}
+                onChange={handleInputChange}
+                required
+              />
+              {errors.email && <span className='text-danger'> {errors.email}</span>}
             </Form.Group>
 
 

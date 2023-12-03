@@ -30,8 +30,10 @@ function Login() {
                 if(res.data.status === 'Success') {
                     if(res.data.data[0].StaffFlag === '0'){
                         navigate('/'); 
-                    } else {
+                    } else if(res.data.data[0].StaffFlag === '1'){
                         navigate('/system-admin-view');
+                    } else if(res.data.data[0].StaffFlag === '2'){
+                        navigate('/browse-passenger-list');
                     }
                 } else {
                     setMessage('Invalid user');

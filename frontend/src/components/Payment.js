@@ -6,6 +6,8 @@ import Row from 'react-bootstrap/Row'; // Import Row
 import Col from 'react-bootstrap/Col'; // Import Col
 import PaymentValidation from './PaymentValidation';
 import axios from 'axios';
+import {toast, ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Payment() {
   const [paymentDetails, setPaymentDetails] = useState({
@@ -59,14 +61,26 @@ function Payment() {
     setErrors(PaymentValidation(paymentDetails))
     if(errors.cardNumber === "" && errors.cardholderName === "" && errors.expiryMonth === "" && errors.expiryYear === "" && errors.cvv === "" && errors.email === ""){
       
-      axios.post('http://localhost:8081/update_ticket', {paymentDetails, selectedSeat, price})
+      axios.post('http://localhost:8081/update_ticket', { paymentDetails, selectedSeat, price })
       .then(res => {
-        navigate('/'); 
+        handleSuccessfulPayment(); // Handle the successful payment
       })
-      .catch(err => console.log(err));
-      
+      .catch(err => {
+        console.log(err);
+        toast.error("Payment failed!");
+      });
   }
-  };
+};
+
+  // Handle the successful payment
+const handleSuccessfulPayment = () => {
+  toast.success("Payment successful and email sent!", {
+    autoClose: 3000,
+    onClose: () => {
+      setTimeout(() => navigate('/'), 3000); // Delay navigation until toast closes
+    }
+  });
+};
 
   return (
     <div>
@@ -178,6 +192,7 @@ function Payment() {
           </Form>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }

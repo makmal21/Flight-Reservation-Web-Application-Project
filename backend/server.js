@@ -293,21 +293,23 @@ app.post('/login', (req,res) => {
   })
 })
 
-//sendRegistrationPromo = require('./sendRegistrationPromo')
+sendRegistrationPromo = require('./sendRegistrationPromo')
 // Register
 app.post('/register', (req,res) => {
-  const sql = "INSERT INTO user (email, password, StaffFlag) VALUES (?, ?, ?)";
+  const sql = "INSERT INTO User (email, password, StaffFlag) VALUES (?, ?, ?)";
   const values = [
       req.body.email,
       req.body.password,
       '0'
   ]
+
   db.query(sql, values, (err,data) => {
       if(err){
-          return res.json("Error");
+        console.error(err)
+        return res.status(500).json({ message: "Error in registration" });
       }
-      //sendRegistrationPromo(re.body.email);
-      return res.json(data);
+      sendRegistrationPromo(req.body.email);
+      res.status(200).json({ message: "Registration successful" });
   })
 })
 
@@ -316,7 +318,7 @@ app.post('/pay', (req,res) => {
 
   const paymentID = generateUniqueID();
   const amount = req.body.price;
-  const sql = "INSERT INTO payment (PaymentID, Amount) VALUES (?, ?)";
+  const sql = "INSERT INTO Payment (PaymentID, Amount) VALUES (?, ?)";
   console.log(paymentID)
   db.query(sql, [paymentID, amount], (err,data) => {
       if(err){
@@ -328,7 +330,7 @@ app.post('/pay', (req,res) => {
 
 // Get price
 app.post('/price', (req, res) => {
-  const sql = "SELECT flight.Price AS flightPrice FROM flight WHERE flight.FlightID = ?";
+  const sql = "SELECT Flight.Price AS flightPrice FROM Flight WHERE Flight.FlightID = ?";
   const fID = req.body.fID;
   console.log(fID);
   db.query(sql, fID, (err, data) => {
@@ -361,7 +363,7 @@ app.post('/update_ticket', async (req, res) => {
     const { SeatID, SeatNo, Type, FlightID } = selectedSeat;
     const paymentID = generateUniqueID();
     const ticketID = generateUniqueID();
-    //console.log("Queried FlightID:", FlightID);
+    console.log(paymentDetails.email);
 
     // SQL Queries
     const seat_sql = "INSERT INTO Seat (SeatID, SeatNo, Type, Status, FlightID) VALUES (?, ?, ?, ?, ?)";

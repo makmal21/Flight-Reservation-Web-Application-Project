@@ -41,7 +41,7 @@ function CancelFlight() {
       {
         try {
           await axios.delete('http://localhost:8081/cancel-flight/'+id)
-          toast.success('Flight Cancelled Successfully!');
+          toast.success('Flight Cancelled Successfully and Email Sent!');
           
           setTimeout(()=>{
             window.location.reload()

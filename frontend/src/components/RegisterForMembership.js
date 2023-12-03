@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react'; // Import useState
 import Validation from './LoginValidation.js';
 import axios from 'axios';
+import {toast, ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function RegisterForMembership() {
     // const navigate = useNavigate();
@@ -31,11 +33,20 @@ function RegisterForMembership() {
             console.log(registrationData)
             axios.post('http://localhost:8081/register', registrationData)
             .then(res => {
-                navigate('/');
+                handleSuccessfulPayment(); // Handle the successful registration
             })
             .catch(err => console.log(err));
         }
     };    
+ 
+    const handleSuccessfulPayment = () => {
+        toast.success("Registration successful and email sent!", {
+            autoClose: 3000,
+            onClose: () => {
+              setTimeout(() => navigate('/'), 3000); // Delay navigation until toast closes
+            }
+          });
+    }
 
 return (
     <div>
@@ -96,6 +107,7 @@ return (
             </form>
             </div>
         </div>
+        <ToastContainer />
     </div>
 );
 

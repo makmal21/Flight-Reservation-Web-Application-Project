@@ -94,9 +94,9 @@ function SeatSelect() {
       <div className="seat-selection-container">
 
         <div className="section-labels">
-          <span className="section-label economy">Ordinary</span>
-          <span className="section-label comfort">Comfort</span>
-          <span className="section-label business">Business</span>
+          <span className="section-label economy">Ordinary ($30) </span>
+          <span className="section-label comfort">Comfort ($42) </span>
+          <span className="section-label business">Business ($60) </span>
         </div>
 
         {createSeatGrid(1, 20)}

@@ -212,7 +212,7 @@ INSERT INTO User (Email, Password, StaffFlag) VALUES
 ('gjones@gmail.com', '$uz8cOBgD$', 1),
 ('lrhonda@hotmail.com', '8%k36Wbyf8', 2),
 ('jcombs@hotmail.com', '1_HiFG+x^w', 0),
-('snewton@gmail.com', '!h!iN!QZ$2', 2,
+('snewton@gmail.com', '!h!iN!QZ$2', 2),
 ('mfrazier@gmail.com', '*45KjyYz@W', 1),
 ('manuel@hotmail.com', '(^8rO5i(tF', 0),
 ('bcampbell@gmail.com', 'iP9JI7xVL&', 0),

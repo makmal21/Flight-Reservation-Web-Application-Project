@@ -128,6 +128,7 @@ CREATE TABLE User (
   PRIMARY KEY (Email)
 );
 INSERT INTO User (Email, Password, StaffFlag) VALUES
+('reguser@gmail.com', 'C!Vhd9Xb!s', 0),
 ('staff@gmail.com','S*P0U%mt8', 1),
 ('admin@hotmail.com', 'CXVhd9Xb!s', 2);
 
@@ -148,18 +149,18 @@ CREATE TABLE Ticket (
 );
 
 INSERT INTO Ticket (TicketID, Name, Email, FlightID, PaymentID, SeatID) VALUES
-('o5pllb', 'Brandon Campbell', 'campbellbrandon@example.net', 23, 'c72f80', '1AAA'),
-('6wftsi', 'Jennifer Combs', 'combsjennifer@example.org', 24, '953efd', '1AAB'),
-('2aobyz', 'Donald Trump', 'donald13@example.com', 27, '35761a', '1AAC'),
-('fvsoti', 'Kristen Dougherty', 'doughertykristen@example.org', 10, '56edd2', '1BAA'),
-('na6etk', 'Francis Young', 'fyoung@example.org', 12, 'dc8911', '1BAB'),
-('joer0v', 'Manuel Green', 'greenmanuel@example.org', 16, 'f74955', '1BAC'),
-('mubu6e', 'Joshua Jones', 'jonesjoshua@example.org', 1, 'fcf29a', '1CAA'),
-('ohmynu', 'Lonnie Anderson', 'landerson@example.com', 25, 'ceecd7', '1CAB'),
-('1b3f8x', 'Rhonda Livingston', 'livingstonrhonda@example.org', 20, 'dd6c37', '1CAC'),
-('2ibrzw', 'Ryan Gordon', 'rgordon@example.net', 2, 'e5a8fa', '1DAA'),
-('qtq1da', 'Ronald Jacobson', 'rjacobson@example.com', 3, 'cfe942', '1DAB'),
-('rpia6h', 'Valerie Fan', 'valerie93@example.com', 29, 'b0f491', '1DAC');
+('o5pllb', 'Brandon Campbell', 'campbellbrandon@example.net', 1, 'c72f80', '1AAA'),
+('6wftsi', 'Jennifer Combs', 'combsjennifer@example.org', 1, '953efd', '1AAB'),
+('2aobyz', 'Donald Trump', 'donald13@example.com', 1, '35761a', '1AAC'),
+('fvsoti', 'Kristen Dougherty', 'doughertykristen@example.org', 2, '56edd2', '1BAA'),
+('na6etk', 'Francis Young', 'fyoung@example.org', 2, 'dc8911', '1BAB'),
+('joer0v', 'Manuel Green', 'greenmanuel@example.org', 2, 'f74955', '1BAC'),
+('mubu6e', 'Joshua Jones', 'jonesjoshua@example.org', 3, 'fcf29a', '1CAA'),
+('ohmynu', 'Lonnie Anderson', 'landerson@example.com', 3, 'ceecd7', '1CAB'),
+('1b3f8x', 'Rhonda Livingston', 'livingstonrhonda@example.org', 3, 'dd6c37', '1CAC'),
+('2ibrzw', 'Ryan Gordon', 'rgordon@example.net', 4, 'e5a8fa', '1DAA'),
+('qtq1da', 'Ronald Jacobson', 'rjacobson@example.com', 4, 'cfe942', '1DAB'),
+('rpia6h', 'Valerie Fan', 'valerie93@example.com', 4, 'b0f491', '1DAC');
 
 -- SYSTEM ADMIN ACCESS TABLES 
 
@@ -200,5 +201,4 @@ VALUES
 ('A002', 'De Havilland Canada DHC-8 Dash 8', 40, 2),
 ('A003', 'Bombardier CRJ Series', 40, 3),
 ('A004', 'De Havilland Canada DHC-8 Dash 8', 40, 4);
-
 

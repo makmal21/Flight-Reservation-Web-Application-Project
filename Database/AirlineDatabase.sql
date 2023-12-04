@@ -169,7 +169,7 @@ CREATE TABLE Crew (
   Name VARCHAR(50),
   Role VARCHAR(25) COMMENT 'Pilot, Co-pilot, Flight Attendant', 
   FlightID INTEGER COMMENT 'Flight crew assigned',
-  FOREIGN KEY (FlightID) REFERENCES FLIGHT(FlightID)
+  FOREIGN KEY (FlightID) REFERENCES Flight(FlightID)
 );
 INSERT INTO Crew (CrewID, Name, Role, FlightID) VALUES
 ('C001', 'John Smith', 'Pilot', 1),
@@ -191,7 +191,7 @@ CREATE TABLE Aircraft (
   Capacity INTEGER COMMENT '40 Seats',
   FlightID INTEGER COMMENT 'aircraft assigned for flight - constantly updated by system admin',
   PRIMARY KEY (AircraftID),
-  FOREIGN KEY (FlightID) REFERENCES FLIGHT(FlightID)
+  FOREIGN KEY (FlightID) REFERENCES Flight(FlightID)
 );
 
 INSERT INTO Aircraft (AircraftID, Model, Capacity, FlightID)

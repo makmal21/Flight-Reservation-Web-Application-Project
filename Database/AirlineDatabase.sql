@@ -86,17 +86,17 @@ CREATE TABLE Seat (
 
 INSERT INTO Seat (SeatID, SeatNo, Type, Status, FlightID) VALUES
 ('1AAA', '1', 'Business Class', 'Unavailable',1),
-('1AAB', '2', 'Comfort', 'Unavailable',1),
-('1AAC', '3', 'Ordinary', 'Unavailable', 1),
+('1AAB', '6', 'Comfort', 'Unavailable',1),
+('1AAC', '12', 'Ordinary', 'Unavailable', 1),
 ('1BAA', '1', 'Business Class', 'Unavailable',2),
-('1BAB', '2', 'Comfort', 'Unavailable',2),
-('1BAC', '3', 'Ordinary', 'Unavailable', 2),
+('1BAB', '6', 'Comfort', 'Unavailable',2),
+('1BAC', '12', 'Ordinary', 'Unavailable', 2),
 ('1CAA', '1', 'Business Class', 'Unavailable',3),
-('1CAB', '2', 'Comfort', 'Unavailable',3),
-('1CAC', '3', 'Ordinary', 'Unavailable', 3),
+('1CAB', '6', 'Comfort', 'Unavailable',3),
+('1CAC', '12', 'Ordinary', 'Unavailable', 3),
 ('1DAA', '1', 'Business Class', 'Unavailable',4),
-('1DAB', '2', 'Comfort', 'Unavailable',4),
-('1DAC', '3', 'Ordinary', 'Unavailable', 4);
+('1DAB', '6', 'Comfort', 'Unavailable',4),
+('1DAC', '12', 'Ordinary', 'Unavailable', 4);
 
 -- Create Payment Table
 DROP TABLE IF EXISTS Payment;

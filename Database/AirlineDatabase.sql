@@ -80,7 +80,7 @@ CREATE TABLE Seat (
     END
   ) STORED,
   PRIMARY KEY (SeatID), 
-  FOREIGN KEY (FlightID) REFERENCES Flight(FlightID) ON UPDATE CASCADE
+  FOREIGN KEY (FlightID) REFERENCES Flight(FlightID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 
@@ -143,9 +143,9 @@ CREATE TABLE Ticket (
   SeatID VARCHAR(20), 
   -- TotalCost VARCHAR(20), -- I don't think we need this -> this can come from the payment table hence "Payment ID"
   PRIMARY KEY (TicketID), 
-  FOREIGN KEY (FlightID) REFERENCES Flight(FlightID) ON UPDATE CASCADE,
-  FOREIGN KEY (PaymentID) REFERENCES Payment(PaymentID),
-  FOREIGN KEY (SeatID) REFERENCES Seat(SeatID)
+FOREIGN KEY (FlightID) REFERENCES Flight(FlightID) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (PaymentID) REFERENCES Payment(PaymentID) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (SeatID) REFERENCES Seat(SeatID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 INSERT INTO Ticket (TicketID, Name, Email, FlightID, PaymentID, SeatID) VALUES
@@ -170,7 +170,7 @@ CREATE TABLE Crew (
   Name VARCHAR(50),
   Role VARCHAR(25) COMMENT 'Pilot, Co-pilot, Flight Attendant', 
   FlightID INTEGER COMMENT 'Flight crew assigned',
-  FOREIGN KEY (FlightID) REFERENCES Flight(FlightID) ON UPDATE CASCADE
+  FOREIGN KEY (FlightID) REFERENCES Flight(FlightID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 INSERT INTO Crew (CrewID, Name, Role, FlightID) VALUES
 ('C001', 'John Smith', 'Pilot', 1),
@@ -192,7 +192,7 @@ CREATE TABLE Aircraft (
   Capacity INTEGER COMMENT '40 Seats',
   FlightID INTEGER COMMENT 'aircraft assigned for flight - constantly updated by system admin',
   PRIMARY KEY (AircraftID),
-  FOREIGN KEY (FlightID) REFERENCES Flight(FlightID) ON UPDATE CASCADE
+  FOREIGN KEY (FlightID) REFERENCES Flight(FlightID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 INSERT INTO Aircraft (AircraftID, Model, Capacity, FlightID)

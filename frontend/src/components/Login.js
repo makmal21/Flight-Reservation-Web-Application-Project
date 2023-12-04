@@ -28,11 +28,11 @@ function Login() {
             axios.post('http://localhost:8081/login', values)
             .then(res => {
                 if(res.data.status === 'Success') {
-                    if(res.data.data[0].StaffFlag === '0'){
+                    if(res.data.data[0].StaffFlag === 0){
                         navigate('/'); 
-                    } else if(res.data.data[0].StaffFlag === '1'){
+                    } else if(res.data.data[0].StaffFlag === 1){
                         navigate('/system-admin-view');
-                    } else if(res.data.data[0].StaffFlag === '2'){
+                    } else if(res.data.data[0].StaffFlag === 2){
                         navigate('/browse-passenger-list');
                     }
                 } else {

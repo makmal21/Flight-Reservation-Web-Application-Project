@@ -16,7 +16,10 @@ function sendCancellationEmail(email, TicketID) {
     from: 'airlineflight867@gmail.com',
     to: email,
     subject: 'Flight Cancellation Confirmation',
-    text: `Your flight with booking ID ${TicketID} has been successfully cancelled.`
+    text:`Hello,\n\n` +
+    `Your flight with booking ID ${TicketID} has been successfully cancelled.\n\n` +
+    `Best Regards,\n\n` +
+    `Romil Airlines`
   };
 
   transporter.sendMail(mailOptions, function(error, info){
